@@ -1,0 +1,35 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- 星像 Logo 简化图案 - 用于背景水印 -->
+  <g opacity="0.3">
+    <!-- 外圈星形 -->
+    <path d="M60 10 L70 45 L105 45 L77 65 L87 100 L60 78 L33 100 L43 65 L15 45 L50 45 Z" 
+          fill="none" 
+          stroke="white" 
+          stroke-width="1.5"/>
+    
+    <!-- 中心圆 -->
+    <circle cx="60" cy="60" r="20" 
+            fill="none" 
+            stroke="white" 
+            stroke-width="1.5"/>
+    
+    <!-- 内部装饰线 -->
+    <line x1="60" y1="40" x2="60" y2="80" 
+          stroke="white" 
+          stroke-width="1"/>
+    <line x1="40" y1="60" x2="80" y2="60" 
+          stroke="white" 
+          stroke-width="1"/>
+    
+    <!-- 对角装饰线 -->
+    <line x1="46" y1="46" x2="74" y2="74" 
+          stroke="white" 
+          stroke-width="0.8" 
+          opacity="0.6"/>
+    <line x1="74" y1="46" x2="46" y2="74" 
+          stroke="white" 
+          stroke-width="0.8" 
+          opacity="0.6"/>
+  </g>
+</svg>
+

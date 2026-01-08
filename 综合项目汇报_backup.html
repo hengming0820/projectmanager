@@ -1,0 +1,1421 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>代码风格规范与nnUNet项目综合汇报</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <style>
+      :root {
+        /* 定义主要颜色变量，便于全局统一管理 */
+        --primary-gradient-start: #4a6fa5; /* 深蓝 */
+        --primary-gradient-end: #2c3e50; /* 深灰蓝 */
+        --secondary-gradient-start: #6a93cb; /* 中蓝 */
+        --secondary-gradient-end: #4a6fa5; /* 深蓝 */
+        --accent-gradient-start: #00c6ff; /* 青色 */
+        --accent-gradient-end: #0072ff; /* 蓝色 */
+        --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        --text-primary: #2c3e50;
+        --text-secondary: #555;
+        --text-light: #7f8c8d;
+        --background-light: #f8f9fa;
+        --border-color: #e0e0e0;
+        --metric-card-bg: linear-gradient(
+          135deg,
+          var(--secondary-gradient-start),
+          var(--secondary-gradient-end)
+        );
+        --highlight-box-bg: linear-gradient(
+          135deg,
+          var(--accent-gradient-start),
+          var(--accent-gradient-end)
+        );
+        --excellent-color: #27ae60; /* 成功/优秀 */
+        --good-color: #f39c12; /* 良好 */
+        --needs-improvement-color: #e74c3c; /* 待改进 */
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--primary-gradient-start) 0%,
+          var(--primary-gradient-end) 100%
+        );
+        color: var(--text-primary);
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      /* Main container enforcing 16:9 aspect ratio */
+      .presentation-container {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        aspect-ratio: 16 / 9;
+        max-width: calc(100vh * 16 / 9);
+        max-height: calc(100vw * 9 / 16);
+        margin: 0 auto;
+        overflow: hidden;
+      }
+      .slide {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2vh 2vw;
+        background: white;
+        box-shadow: var(--card-shadow);
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1;
+        overflow-y: auto;
+        aspect-ratio: 16 / 9;
+      }
+      .slide.active {
+        opacity: 1;
+        transform: translateX(0);
+        z-index: 10;
+      }
+      .slide.prev {
+        transform: translateX(-100%);
+      }
+      .slide h1 {
+        font-size: 3.2vw;
+        color: var(--text-primary);
+        margin-bottom: 2vh;
+        text-align: center;
+        background: linear-gradient(
+          45deg,
+          var(--primary-gradient-start),
+          var(--secondary-gradient-end)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.2;
+        font-weight: 700;
+      }
+      .slide h2 {
+        font-size: 2.5vw;
+        color: var(--text-primary);
+        margin-bottom: 2vh;
+        text-align: center;
+        line-height: 1.2;
+        font-weight: 600;
+      }
+      .slide h3 {
+        font-size: 1.8vw;
+        color: var(--text-primary);
+        margin-bottom: 1vh;
+        line-height: 1.2;
+        font-weight: 500;
+      }
+      .slide h4 {
+        font-size: 1.4vw;
+        color: var(--text-primary);
+        margin-bottom: 0.8vh;
+        line-height: 1.2;
+        font-weight: 500;
+      }
+      .slide p,
+      .slide li {
+        font-size: 1.4vw;
+        line-height: 1.5;
+        margin-bottom: 1vh;
+        color: var(--text-secondary);
+      }
+      .slide ul {
+        padding-left: 1.5em;
+      }
+      /* --- 统一卡片样式 --- */
+      .chart-card,
+      .stats-card {
+        width: 100%;
+        max-width: 90vw;
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 20px;
+        box-sizing: border-box;
+      }
+      .chart-grid {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        gap: 30px;
+        align-items: center;
+        width: 100%;
+      }
+      .chart-section {
+        width: 100%;
+      }
+      .chart-section h3 {
+        margin-bottom: 18px;
+        color: var(--text-primary);
+        font-size: 1.2em;
+        text-align: center;
+      }
+      .chart-section > div {
+        height: 380px;
+        position: relative;
+        width: 100%;
+      }
+      .chart-section canvas {
+        max-height: 100%;
+        width: 100% !important;
+        height: 100% !important;
+      }
+      .stats-card h3 {
+        margin-bottom: 18px;
+        color: var(--text-primary);
+        font-size: 1.2em;
+        text-align: center;
+      }
+      /* --- 指标卡片 --- */
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(20vw, 1fr));
+        gap: 2vw;
+        width: 100%;
+        max-width: 90vw;
+      }
+      .metric-card {
+        background: var(--metric-card-bg);
+        padding: 2vh 1.5vw;
+        border-radius: 12px;
+        text-align: center;
+        color: white;
+        box-shadow: var(--card-shadow);
+        transform: translateY(20px);
+        opacity: 0;
+        animation: slideUp 0.8s ease forwards;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+      }
+      .metric-card:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .metric-card:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      .metric-card:nth-child(4) {
+        animation-delay: 0.6s;
+      }
+      .metric-value {
+        font-size: 2.5em;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .metric-label {
+        font-size: 1.1em;
+        opacity: 0.95;
+      }
+      /* --- 高亮框 --- */
+      .highlight-box {
+        background: var(--highlight-box-bg);
+        padding: 30px;
+        border-radius: 12px;
+        color: white;
+        text-align: center;
+        margin: 20px 0;
+        box-shadow: var(--card-shadow);
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .highlight-box h3,
+      .highlight-box h4,
+      .highlight-box p {
+        color: white;
+      }
+      .highlight-box p {
+        font-size: 1.2em;
+      }
+      /* --- 图表容器 --- */
+      .chart-container {
+        width: 100%;
+        max-width: 45vw;
+        height: 40vh;
+        text-align: center;
+        margin: 2vh 0;
+        background: white;
+        padding: 2vh 1.5vw;
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        position: relative;
+      }
+      .chart-canvas {
+        width: 100% !important;
+        height: 30vh !important;
+        max-height: 30vh;
+      }
+      /* --- 性能列表 --- */
+      .performance-list {
+        list-style: none;
+        width: 100%;
+      }
+      .performance-item {
+        background: white;
+        margin: 15px 0;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: var(--card-shadow);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transform: translateX(-50px);
+        opacity: 0;
+        animation: slideInLeft 0.8s ease forwards;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .performance-item:hover {
+        transform: translateX(-45px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      }
+      .performance-item:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .performance-item:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      .performance-item:nth-child(4) {
+        animation-delay: 0.6s;
+      }
+      .performance-item:nth-child(5) {
+        animation-delay: 0.8s;
+      }
+      .performance-name {
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+      .performance-score {
+        font-size: 1.4em;
+        font-weight: bold;
+        color: var(--excellent-color);
+      }
+      .excellent {
+        color: var(--excellent-color);
+      }
+      .good {
+        color: var(--good-color);
+      }
+      .needs-improvement {
+        color: var(--needs-improvement-color);
+      }
+      /* --- 两列布局 --- */
+      .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3vw;
+        width: 100%;
+        max-width: 95vw;
+        align-items: start;
+        margin: 2vh 0;
+      }
+      .two-column .chart-container {
+        height: 35vh;
+        margin: 1vh 0;
+        max-width: 44vw;
+      }
+      .two-column .chart-canvas {
+        height: 26vh !important;
+        max-height: 26vh;
+      }
+      /* --- 数据表格 --- */
+      .table-container {
+        width: 100%;
+        overflow-x: auto;
+      }
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+      }
+      .data-table th {
+        background: linear-gradient(
+          135deg,
+          var(--primary-gradient-start),
+          var(--secondary-gradient-end)
+        );
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 500;
+        font-size: 1.05em;
+      }
+      .data-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-secondary);
+      }
+      .data-table tr:hover {
+        background: var(--background-light);
+      }
+      .data-table tr:last-child td {
+        border-bottom: none;
+      }
+      /* --- 导航与进度 --- */
+      .navigation {
+        position: fixed;
+        bottom: 15px;
+        right: 20px;
+        display: flex;
+        gap: 15px;
+        z-index: 99999;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 10px 15px;
+        border-radius: 30px;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      .nav-btn {
+        padding: 8px 16px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-gradient-start),
+          var(--secondary-gradient-end)
+        );
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        min-width: 80px;
+      }
+      .nav-btn:hover {
+        background: linear-gradient(
+          135deg,
+          var(--secondary-gradient-start),
+          var(--primary-gradient-start)
+        );
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+      }
+      .nav-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background: #95a5a6;
+        transform: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .nav-btn:active {
+        transform: translateY(0) scale(1.01);
+      }
+      .slide-counter {
+        position: fixed;
+        top: 30px;
+        right: 30px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 10px 20px;
+        border-radius: 20px;
+        color: var(--text-primary);
+        font-weight: 500;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        font-size: 1.1em;
+      }
+      .navigation-hint {
+        position: fixed;
+        top: 30px;
+        left: 30px;
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--text-primary);
+        padding: 12px 20px;
+        border-radius: 25px;
+        font-size: 14px;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        animation: fadeInOut 4s ease-in-out infinite;
+        font-weight: 500;
+      }
+      @keyframes fadeInOut {
+        0%,
+        100% {
+          opacity: 0.8;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+      .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--accent-gradient-start),
+          var(--accent-gradient-end)
+        );
+        transition: width 0.6s ease;
+        z-index: 1000;
+      }
+      /* --- 动画 --- */
+      @keyframes slideUp {
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      @keyframes slideInLeft {
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+      .fade-in {
+        opacity: 0;
+        animation: fadeIn 1s ease forwards;
+      }
+
+      /* --- 工作量减少效果样式 --- */
+      .efficiency-card {
+        background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+        border: 2px solid #27ae60;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 15px 0;
+        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.15);
+        transition: all 0.3s ease;
+      }
+
+      .efficiency-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(39, 174, 96, 0.25);
+      }
+
+      .efficiency-card h4 {
+        color: #27ae60;
+        margin-bottom: 10px;
+        font-size: 1.2em;
+      }
+
+      .efficiency-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .efficiency-item {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        border-left: 4px solid #27ae60;
+      }
+
+      .efficiency-number {
+        font-size: 2em;
+        font-weight: bold;
+        color: #27ae60;
+        margin-bottom: 5px;
+      }
+
+      .efficiency-label {
+        font-size: 0.9em;
+        color: var(--text-secondary);
+      }
+
+      /* --- 响应式设计 --- */
+      @media (max-width: 768px) {
+        .slide {
+          padding: 30px 20px;
+        }
+        .slide h1 {
+          font-size: 2.2em;
+        }
+        .slide h2 {
+          font-size: 1.8em;
+        }
+        .slide h3 {
+          font-size: 1.4em;
+        }
+        .slide h4 {
+          font-size: 1.2em;
+        }
+        .slide p,
+        .slide li {
+          font-size: 1.1em;
+        }
+        .metrics-grid {
+          grid-template-columns: 1fr;
+        }
+        .two-column {
+          grid-template-columns: 1fr;
+        }
+        .chart-grid {
+          grid-template-columns: 1fr !important;
+          gap: 20px !important;
+        }
+        .chart-card,
+        .stats-card {
+          padding: 15px !important;
+        }
+        .stats-card h3 {
+          font-size: 1.1em !important;
+        }
+        .highlight-box {
+          width: 100% !important;
+          padding: 20px !important;
+        }
+        .navigation {
+          bottom: 10px;
+          right: 10px;
+          padding: 8px 12px;
+        }
+        .nav-btn {
+          padding: 6px 12px;
+          font-size: 12px;
+          min-width: 65px;
+        }
+        .slide-counter,
+        .navigation-hint {
+          font-size: 0.9em;
+          padding: 8px 15px;
+        }
+        .efficiency-stats {
+          grid-template-columns: 1fr !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="presentation-container">
+      <div class="progress-bar" id="progressBar"></div>
+      <div class="slide-counter" id="slideCounter">1 / 12</div>
+      <div class="navigation-hint">使用 ← → 键或点击按钮导航</div>
+
+      <!-- 幻灯片 1: 综合项目标题页 -->
+      <div class="slide active">
+        <h1>代码风格规范与nnUNet项目综合汇报</h1>
+        <div class="highlight-box">
+          <h3>统一规范 · 提升效率 · 自动化流程 · 质量保障</h3>
+          <p>完整的代码规范体系 + 26个自定义脚本 + 全流程自动化</p>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-value">2</div>
+            <div class="metric-label">项目模板</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">26</div>
+            <div class="metric-label">自动化脚本</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">100%</div>
+            <div class="metric-label">规范覆盖</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">5x</div>
+            <div class="metric-label">效率提升</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 2: 项目整体架构 -->
+      <div class="slide">
+        <h2>项目整体架构</h2>
+        <div class="chart-grid">
+          <div class="stats-card">
+            <h3>项目组成结构</h3>
+            <div class="efficiency-stats">
+              <div class="efficiency-item">
+                <div class="efficiency-number">2</div>
+                <div class="efficiency-label">语言模板</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">8</div>
+                <div class="efficiency-label">代码质量工具</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">3</div>
+                <div class="efficiency-label">核心规范文档</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">26</div>
+                <div class="efficiency-label">nnUNet脚本</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">100%</div>
+                <div class="efficiency-label">Git工作流覆盖</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">2</div>
+                <div class="efficiency-label">汇报展示</div>
+              </div>
+            </div>
+          </div>
+          <div class="chart-section">
+            <h3>项目架构分布</h3>
+            <div>
+              <canvas id="projectArchChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 3: 代码规范体系 -->
+      <div class="slide">
+        <h2>代码规范体系</h2>
+        <div class="two-column">
+          <div>
+            <div class="efficiency-card">
+              <h4>📋 编码风格守则</h4>
+              <p><strong>覆盖语言：</strong>C/C++ & Python</p>
+              <p><strong>核心原则：</strong></p>
+              <ul>
+                <li>统一风格优先，个人习惯其次</li>
+                <li>命名即注释，代码即文档</li>
+                <li>最小改动、最大可读性</li>
+              </ul>
+              <p><strong>规范内容：</strong>文件结构、命名约定、代码格式、注释规范</p>
+            </div>
+            <div class="efficiency-card">
+              <h4>🔧 Python项目模板</h4>
+              <p><strong>技术栈：</strong>Python 3.8+</p>
+              <p><strong>质量工具：</strong></p>
+              <ul>
+                <li>Black - 代码格式化</li>
+                <li>isort - 导入排序</li>
+                <li>Ruff - 代码检查</li>
+                <li>pre-commit - 提交钩子</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="efficiency-card">
+              <h4>⚙️ C++项目模板</h4>
+              <p><strong>构建系统：</strong>CMake & QMake</p>
+              <p><strong>质量工具：</strong></p>
+              <ul>
+                <li>clang-format - 代码格式化</li>
+                <li>cpplint - 代码检查</li>
+                <li>pre-commit - 提交钩子</li>
+              </ul>
+              <p><strong>测试框架：</strong>集成测试目录结构</p>
+            </div>
+            <div class="efficiency-card">
+              <h4>📚 Git工作流规范</h4>
+              <p><strong>分支模型：</strong>Git-Flow</p>
+              <p><strong>提交规范：</strong>Conventional Commits</p>
+              <p><strong>代码审查：</strong>Pull Request流程</p>
+              <p><strong>版本管理：</strong>语义化版本控制</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 4: 代码质量工具配置 -->
+      <div class="slide">
+        <h2>代码质量工具配置</h2>
+        <div class="chart-grid">
+          <div class="chart-section">
+            <h3>工具使用分布</h3>
+            <div>
+              <canvas id="toolsChart"></canvas>
+            </div>
+          </div>
+          <div class="stats-card">
+            <h3>工具配置详情</h3>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>工具</th>
+                    <th>功能</th>
+                    <th>配置</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Black</td>
+                    <td>代码格式化</td>
+                    <td>行长100，Python 3.8+</td>
+                  </tr>
+                  <tr>
+                    <td>isort</td>
+                    <td>导入排序</td>
+                    <td>Black兼容模式</td>
+                  </tr>
+                  <tr>
+                    <td>Ruff</td>
+                    <td>代码检查</td>
+                    <td>12类规则，复杂度≤10</td>
+                  </tr>
+                  <tr>
+                    <td>pre-commit</td>
+                    <td>提交钩子</td>
+                    <td>5个钩子，自动修复</td>
+                  </tr>
+                  <tr>
+                    <td>clang-format</td>
+                    <td>C++格式化</td>
+                    <td>Google风格定制</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 5: nnUNet项目脚本概览 -->
+      <div class="slide">
+        <h2>nnUNet项目脚本开发概览</h2>
+        <div class="chart-grid">
+          <div class="stats-card">
+            <h3>脚本开发成果</h3>
+            <div class="efficiency-stats">
+              <div class="efficiency-item">
+                <div class="efficiency-number">26</div>
+                <div class="efficiency-label">自定义脚本</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">5</div>
+                <div class="efficiency-label">Shell脚本</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">21</div>
+                <div class="efficiency-label">Python脚本</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">76.9%</div>
+                <div class="efficiency-label">高度自动化</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">69.2%</div>
+                <div class="efficiency-label">参数化配置</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">57.7%</div>
+                <div class="efficiency-label">错误处理</div>
+              </div>
+            </div>
+          </div>
+          <div class="chart-section">
+            <h3>脚本类型分布</h3>
+            <div>
+              <canvas id="scriptTypeChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 6: 工作量减少效果 -->
+      <div class="slide">
+        <h2>工作量减少效果分析</h2>
+        <div class="efficiency-card">
+          <h4>🚀 数据处理阶段 - 减少 85% 手工操作</h4>
+          <p
+            ><strong>原始工作量：</strong>手动处理每个数据集需要 2-3
+            天，包括格式转换、质量检查、预处理配置</p
+          >
+          <p><strong>脚本化后：</strong>批量处理多个数据集仅需 2-4 小时，全自动化执行</p>
+          <p
+            ><strong>核心脚本：</strong>dataset_builder_unified.py,
+            build_nnunet_datasets_batch.py</p
+          >
+        </div>
+        <div class="efficiency-card">
+          <h4>⚡ 模型训练阶段 - 减少 70% 配置时间</h4>
+          <p><strong>原始工作量：</strong>每次训练需要手动配置参数、监控进程、管理日志</p>
+          <p><strong>脚本化后：</strong>一键启动五折交叉验证，自动参数优化和进程管理</p>
+          <p><strong>核心脚本：</strong>train_5fold_single_gpu.sh, validate_model.sh</p>
+        </div>
+        <div class="efficiency-card">
+          <h4>📊 结果分析阶段 - 减少 90% 报告生成时间</h4>
+          <p><strong>原始工作量：</strong>手动收集指标、制作图表、编写报告需要 1-2 天</p>
+          <p><strong>脚本化后：</strong>自动生成完整测试报告，包含可视化图表，仅需 10-15 分钟</p>
+          <p><strong>核心脚本：</strong>generate_test_report.py, generate_xlsx_report.py</p>
+        </div>
+      </div>
+
+      <!-- 幻灯片 7: 自动化覆盖范围 -->
+      <div class="slide">
+        <h2>自动化覆盖范围</h2>
+        <div class="chart-grid">
+          <div class="stats-card">
+            <h3>自动化程度评估</h3>
+            <ul class="performance-list">
+              <li class="performance-item">
+                <span class="performance-name">代码规范检查</span>
+                <span class="performance-score excellent">100%</span>
+              </li>
+              <li class="performance-item">
+                <span class="performance-name">数据预处理自动化</span>
+                <span class="performance-score excellent">100%</span>
+              </li>
+              <li class="performance-item">
+                <span class="performance-name">模型训练自动化</span>
+                <span class="performance-score excellent">95%</span>
+              </li>
+              <li class="performance-item">
+                <span class="performance-name">结果分析自动化</span>
+                <span class="performance-score excellent">90%</span>
+              </li>
+              <li class="performance-item">
+                <span class="performance-name">报告生成自动化</span>
+                <span class="performance-score excellent">100%</span>
+              </li>
+              <li class="performance-item">
+                <span class="performance-name">Git工作流自动化</span>
+                <span class="performance-score excellent">95%</span>
+              </li>
+            </ul>
+          </div>
+          <div class="chart-section">
+            <h3>效率提升对比</h3>
+            <div>
+              <canvas id="efficiencyChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 8: 技术栈与工具链 -->
+      <div class="slide">
+        <h2>技术栈与工具链</h2>
+        <div class="two-column">
+          <div>
+            <div class="efficiency-card">
+              <h4>🐍 Python生态系统</h4>
+              <p><strong>核心版本：</strong>Python 3.8+</p>
+              <p><strong>构建工具：</strong>setuptools, pyproject.toml</p>
+              <p><strong>测试框架：</strong>pytest</p>
+              <p><strong>质量工具：</strong>black, isort, ruff</p>
+              <p><strong>Jupyter支持：</strong>nbqa集成</p>
+            </div>
+            <div class="efficiency-card">
+              <h4>🔧 C++工具链</h4>
+              <p><strong>构建系统：</strong>CMake, QMake</p>
+              <p><strong>编译器：</strong>GCC, Clang, MSVC</p>
+              <p><strong>格式化：</strong>clang-format</p>
+              <p><strong>静态检查：</strong>cpplint</p>
+              <p><strong>IDE支持：</strong>Qt Creator, VS Code</p>
+            </div>
+          </div>
+          <div>
+            <div class="efficiency-card">
+              <h4>🔄 版本控制</h4>
+              <p><strong>平台：</strong>Gitea (私有化部署)</p>
+              <p><strong>工作流：</strong>Git-Flow分支模型</p>
+              <p><strong>提交规范：</strong>Conventional Commits</p>
+              <p><strong>代码审查：</strong>Pull Request</p>
+              <p><strong>自动化：</strong>pre-commit hooks</p>
+            </div>
+            <div class="efficiency-card">
+              <h4>📊 项目管理</h4>
+              <p><strong>文档：</strong>Markdown, HTML展示</p>
+              <p><strong>配置：</strong>TOML, YAML</p>
+              <p><strong>模板：</strong>项目脚手架</p>
+              <p><strong>规范：</strong>统一编码风格</p>
+              <p><strong>培训：</strong>交互式演示</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 9: 功能分类与优化策略 -->
+      <div class="slide">
+        <h2>nnUNet脚本功能分类与优化策略</h2>
+        <div class="chart-grid">
+          <div class="chart-section">
+            <h3>功能分类统计</h3>
+            <div>
+              <canvas id="functionChart"></canvas>
+            </div>
+          </div>
+          <div class="stats-card">
+            <h3>优化策略详解</h3>
+            <div class="efficiency-card">
+              <h4>🎯 数据处理优化 (7个脚本)</h4>
+              <p>• 并行处理：多进程数据转换</p>
+              <p>• 智能缓存：避免重复计算</p>
+              <p>• 格式统一：标准化输入输出</p>
+            </div>
+            <div class="efficiency-card">
+              <h4>📊 性能分析优化 (8个脚本)</h4>
+              <p>• 自动化收集：递归扫描结果</p>
+              <p>• 可视化生成：动态图表创建</p>
+              <p>• 多格式输出：Excel/JSON/HTML</p>
+            </div>
+            <div class="efficiency-card">
+              <h4>🚀 训练流程优化 (3个脚本)</h4>
+              <p>• 资源调度：GPU智能分配</p>
+              <p>• 进度监控：实时状态反馈</p>
+              <p>• 异常处理：自动重试机制</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 10: 项目价值与影响 -->
+      <div class="slide">
+        <h2>项目价值与影响</h2>
+        <div class="chart-grid">
+          <div class="chart-section">
+            <h3>价值评估雷达图</h3>
+            <div>
+              <canvas id="valueChart"></canvas>
+            </div>
+          </div>
+          <div class="stats-card">
+            <h3>核心价值体现</h3>
+            <div class="efficiency-card">
+              <h4>🎯 团队协作效率</h4>
+              <p>• 统一的代码风格减少沟通成本</p>
+              <p>• 标准化流程提升协作效率</p>
+              <p>• 自动化检查保证代码质量</p>
+            </div>
+            <div class="efficiency-card">
+              <h4>💡 技术债务控制</h4>
+              <p>• 预防性质量检查</p>
+              <p>• 持续集成保障</p>
+              <p>• 规范化降低维护成本</p>
+            </div>
+            <div class="efficiency-card">
+              <h4>🚀 开发效率提升</h4>
+              <p>• 项目模板快速启动</p>
+              <p>• 自动化脚本减少重复工作</p>
+              <p>• 工具链集成提升开发体验</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 11: 最佳实践与经验总结 -->
+      <div class="slide">
+        <h2>最佳实践与经验总结</h2>
+        <div class="two-column">
+          <div>
+            <div class="efficiency-card">
+              <h4>📋 规范制定原则</h4>
+              <ul>
+                <li><strong>渐进式推进：</strong>从核心规范开始，逐步完善</li>
+                <li><strong>工具化实施：</strong>通过自动化工具强制执行</li>
+                <li><strong>团队共识：</strong>充分讨论，达成一致</li>
+                <li><strong>持续改进：</strong>根据实践反馈优化规范</li>
+              </ul>
+            </div>
+            <div class="efficiency-card">
+              <h4>🔧 工具链建设</h4>
+              <ul>
+                <li><strong>统一配置：</strong>所有项目使用相同工具配置</li>
+                <li><strong>自动化优先：</strong>能自动化的绝不手动</li>
+                <li><strong>IDE集成：</strong>开发环境无缝集成</li>
+                <li><strong>CI/CD集成：</strong>持续集成流水线检查</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="efficiency-card">
+              <h4>📚 知识传承</h4>
+              <ul>
+                <li><strong>文档完善：</strong>详细的使用说明和示例</li>
+                <li><strong>培训体系：</strong>新员工入职培训</li>
+                <li><strong>经验分享：</strong>定期技术分享会</li>
+                <li><strong>问题记录：</strong>常见问题解决方案</li>
+              </ul>
+            </div>
+            <div class="efficiency-card">
+              <h4>🎯 持续优化</h4>
+              <ul>
+                <li><strong>指标监控：</strong>代码质量指标跟踪</li>
+                <li><strong>反馈收集：</strong>团队使用反馈</li>
+                <li><strong>版本迭代：</strong>规范和工具持续更新</li>
+                <li><strong>技术跟进：</strong>关注行业最佳实践</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 12: 总结与展望 -->
+      <div class="slide">
+        <h2>总结与展望</h2>
+        <div class="highlight-box">
+          <h3>🏆 项目成果总结</h3>
+          <p
+            >建立了完整的代码规范体系，实现了nnUNet项目全流程自动化，显著提升了团队开发效率和代码质量</p
+          >
+        </div>
+        <div class="two-column">
+          <div>
+            <div class="efficiency-card">
+              <h4>✅ 已完成成果</h4>
+              <ul>
+                <li>C++和Python项目模板</li>
+                <li>完整的编码风格规范</li>
+                <li>Git工作流标准化</li>
+                <li>26个nnUNet自动化脚本</li>
+                <li>代码质量工具链集成</li>
+                <li>团队培训体系建立</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="efficiency-card">
+              <h4>🚀 未来规划</h4>
+              <ul>
+                <li>扩展更多语言支持（Go、Rust等）</li>
+                <li>完善CI/CD流水线</li>
+                <li>建立代码质量度量体系</li>
+                <li>开发更多自动化工具</li>
+                <li>建立最佳实践知识库</li>
+                <li>推广到更多项目团队</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="metrics-grid" style="margin-top: 30px">
+          <div class="metric-card">
+            <div class="metric-value">80%</div>
+            <div class="metric-label">工作量减少</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">5x</div>
+            <div class="metric-label">效率提升</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">100%</div>
+            <div class="metric-label">规范覆盖</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">∞</div>
+            <div class="metric-label">持续改进</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 导航按钮 -->
+      <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">上一页</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一页</button>
+      </div>
+    </div>
+
+    <script>
+      let currentSlide = 0
+      const totalSlides = 12
+
+      function showSlide(n) {
+        const slides = document.querySelectorAll('.slide')
+
+        if (n >= totalSlides) currentSlide = 0
+        if (n < 0) currentSlide = totalSlides - 1
+
+        slides.forEach((slide, index) => {
+          slide.classList.remove('active', 'prev')
+          if (index === currentSlide) {
+            slide.classList.add('active')
+          } else if (index < currentSlide) {
+            slide.classList.add('prev')
+          }
+        })
+
+        // 更新进度条
+        const progress = ((currentSlide + 1) / totalSlides) * 100
+        document.getElementById('progressBar').style.width = progress + '%'
+
+        // 更新计数器
+        document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`
+
+        // 更新导航按钮状态
+        document.getElementById('prevBtn').disabled = currentSlide === 0
+        document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1
+
+        // 初始化当前幻灯片的图表
+        setTimeout(() => {
+          initializeChartsForCurrentSlide()
+        }, 300)
+      }
+
+      function changeSlide(n) {
+        currentSlide += n
+        showSlide(currentSlide)
+      }
+
+      // 键盘导航
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft') changeSlide(-1)
+        if (e.key === 'ArrowRight') changeSlide(1)
+      })
+
+      function initializeChartsForCurrentSlide() {
+        if (currentSlide === 1) {
+          initProjectArchChart()
+        } else if (currentSlide === 3) {
+          initToolsChart()
+        } else if (currentSlide === 4) {
+          initScriptTypeChart()
+        } else if (currentSlide === 6) {
+          initEfficiencyChart()
+        } else if (currentSlide === 8) {
+          initFunctionChart()
+        } else if (currentSlide === 9) {
+          initValueChart()
+        }
+      }
+
+      function initProjectArchChart() {
+        const ctx = document.getElementById('projectArchChart')
+        if (!ctx || ctx.chart) return
+
+        ctx.chart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['代码规范', 'nnUNet脚本', '项目模板', '工具配置', '文档展示'],
+            datasets: [
+              {
+                data: [25, 35, 15, 15, 10],
+                backgroundColor: ['#4a6fa5', '#6a93cb', '#00c6ff', '#0072ff', '#27ae60'],
+                borderWidth: 2,
+                borderColor: '#fff'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 20,
+                  font: { size: 14 }
+                }
+              }
+            }
+          }
+        })
+      }
+
+      function initToolsChart() {
+        const ctx = document.getElementById('toolsChart')
+        if (!ctx || ctx.chart) return
+
+        ctx.chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Python工具', 'C++工具', 'Git工具', '通用工具'],
+            datasets: [
+              {
+                label: '工具数量',
+                data: [4, 2, 1, 1],
+                backgroundColor: ['#4a6fa5', '#6a93cb', '#00c6ff', '#27ae60']
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: '工具数量'
+                }
+              }
+            }
+          }
+        })
+      }
+
+      function initScriptTypeChart() {
+        const ctx = document.getElementById('scriptTypeChart')
+        if (!ctx || ctx.chart) return
+
+        ctx.chart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Python脚本', 'Shell脚本'],
+            datasets: [
+              {
+                data: [21, 5],
+                backgroundColor: ['#4a6fa5', '#6a93cb'],
+                borderWidth: 2,
+                borderColor: '#fff'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 20,
+                  font: { size: 14 }
+                }
+              }
+            }
+          }
+        })
+      }
+
+      function initEfficiencyChart() {
+        const ctx = document.getElementById('efficiencyChart')
+        if (!ctx || ctx.chart) return
+
+        ctx.chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['代码检查', '数据处理', '模型训练', '结果分析', '报告生成', 'Git流程'],
+            datasets: [
+              {
+                label: '原始时间(小时)',
+                data: [8, 72, 24, 48, 16, 4],
+                backgroundColor: '#e74c3c'
+              },
+              {
+                label: '自动化后(小时)',
+                data: [0.1, 2, 4, 2, 0.25, 0.5],
+                backgroundColor: '#27ae60'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: '时间(小时)'
+                }
+              }
+            }
+          }
+        })
+      }
+
+      function initFunctionChart() {
+        const ctx = document.getElementById('functionChart')
+        if (!ctx || ctx.chart) return
+
+        ctx.chart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: ['数据处理', '性能分析', '模型训练', '标签处理', '开发工具', '其他工具'],
+            datasets: [
+              {
+                data: [7, 8, 3, 3, 3, 2],
+                backgroundColor: ['#4a6fa5', '#6a93cb', '#00c6ff', '#0072ff', '#27ae60', '#f39c12']
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'right',
+                labels: {
+                  padding: 15,
+                  font: { size: 12 }
+                }
+              }
+            }
+          }
+        })
+      }
+
+      function initValueChart() {
+        const ctx = document.getElementById('valueChart')
+        if (!ctx || ctx.chart) return
+
+        ctx.chart = new Chart(ctx, {
+          type: 'radar',
+          data: {
+            labels: ['效率提升', '错误减少', '成本节约', '标准化', '可维护性', '团队协作'],
+            datasets: [
+              {
+                label: '价值指标',
+                data: [95, 90, 85, 100, 88, 92],
+                backgroundColor: 'rgba(74, 111, 165, 0.2)',
+                borderColor: '#4a6fa5',
+                borderWidth: 2,
+                pointBackgroundColor: '#4a6fa5'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              r: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                  stepSize: 20
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        })
+      }
+
+      // 初始化
+      document.addEventListener('DOMContentLoaded', function () {
+        showSlide(0)
+        setTimeout(() => {
+          initializeChartsForCurrentSlide()
+        }, 500)
+      })
+    </script>
+  </body>
+</html>

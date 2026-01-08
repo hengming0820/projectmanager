@@ -1,0 +1,36 @@
+{
+  "name": "yjs-collaboration-server",
+  "version": "1.0.0",
+  "description": "Yjs WebSocket server for XNote editor real-time collaboration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "pm2:start": "pm2 start server.js --name yjs-collab",
+    "pm2:stop": "pm2 stop yjs-collab",
+    "pm2:restart": "pm2 restart yjs-collab",
+    "pm2:logs": "pm2 logs yjs-collab",
+    "pm2:delete": "pm2 delete yjs-collab"
+  },
+  "keywords": [
+    "yjs",
+    "websocket",
+    "collaboration",
+    "crdt",
+    "realtime",
+    "xnote"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.14.0",
+    "y-websocket": "^1.5.0",
+    "yjs": "^13.6.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

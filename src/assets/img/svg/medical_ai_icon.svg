@@ -1,0 +1,67 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景扫描渐变 -->
+  <defs>
+    <radialGradient id="scanGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#4A90E2" stop-opacity="0.1"/>
+      <stop offset="70%" stop-color="#4A90E2" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#4A90E2" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 扫描圈 -->
+  <circle cx="256" cy="256" r="200" fill="url(#scanGradient)" stroke="#4A90E2" stroke-width="1.5" stroke-opacity="0.3"/>
+  <circle cx="256" cy="256" r="160" fill="none" stroke="#5E6AD9" stroke-width="1" stroke-opacity="0.4"/>
+  <circle cx="256" cy="256" r="120" fill="none" stroke="#4A90E2" stroke-width="1" stroke-opacity="0.6"/>
+
+  <!-- 十字线 -->
+  <path d="M156 256h200M256 156v200" stroke="#4A90E2" stroke-width="1.5" stroke-opacity="0.5"/>
+
+  <!-- 肺部整体 -->
+  <g id="lungs" transform="translate(0,0)">
+    <animateTransform attributeName="transform" attributeType="XML"
+      type="rotate" from="-2 256 256" to="2 256 256"
+      dur="5s" repeatCount="indefinite" additive="sum" />
+
+    <!-- 左肺轮廓 -->
+    <path d="M240 220 C200 200, 185 280, 225 340 Q250 320 250 280 Z"
+          fill="none" stroke="#FFB347" stroke-width="1.2" opacity="0.8"/>
+    <!-- 右肺轮廓 -->
+    <path d="M272 220 C312 200, 327 280, 287 340 Q262 320 262 280 Z"
+          fill="none" stroke="#FFB347" stroke-width="1.2" opacity="0.8"/>
+    <!-- 气管 -->
+    <line x1="256" y1="180" x2="256" y2="230" stroke="#FFB347" stroke-width="3" opacity="0.9"/>
+  </g>
+
+  <!-- 动脉（红色脉冲线） -->
+  <g stroke="#FF4D4D" stroke-width="2" fill="none">
+    <path d="M256 230 Q240 260 230 300" stroke-dasharray="6 6">
+      <animate attributeName="stroke-dashoffset" values="0;-12" dur="1.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M256 230 Q270 260 280 300" stroke-dasharray="6 6">
+      <animate attributeName="stroke-dashoffset" values="0;-12" dur="1.5s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- 静脉（蓝色脉冲线） -->
+  <g stroke="#4DA6FF" stroke-width="2" fill="none">
+    <path d="M256 240 Q245 270 240 310" stroke-dasharray="6 6">
+      <animate attributeName="stroke-dashoffset" values="0;-12" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M256 240 Q265 270 270 310" stroke-dasharray="6 6">
+      <animate attributeName="stroke-dashoffset" values="0;-12" dur="2s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- AI 定位点 -->
+  <circle cx="256" cy="256" r="10" fill="#FF6F61" opacity="0.9">
+    <animate attributeName="r" values="10;13;10" dur="2s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- 粒子特效 -->
+  <circle cx="210" cy="240" r="2.5" fill="#00E5FF" opacity="0.8">
+    <animate attributeName="opacity" values="1;0" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="290" cy="270" r="2.5" fill="#FF4081" opacity="0.9">
+    <animate attributeName="opacity" values="1;0" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+</svg>

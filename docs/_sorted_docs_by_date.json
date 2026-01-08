@@ -1,0 +1,642 @@
+﻿[
+  {
+    "Name": "USER_DELETE_LOGIC.md",
+    "Date": "2025-10-16"
+  },
+  {
+    "Name": "MENU_REORGANIZATION.md",
+    "Date": "2025-10-16"
+  },
+  {
+    "Name": "REDIS_USAGE.md",
+    "Date": "2025-10-16"
+  },
+  {
+    "Name": "USER_DELETE_TASK_STATUS.md",
+    "Date": "2025-10-16"
+  },
+  {
+    "Name": "USER_AVATAR_FIX.md",
+    "Date": "2025-10-16"
+  },
+  {
+    "Name": "PERMISSION_MANAGEMENT.md",
+    "Date": "2025-10-16"
+  },
+  {
+    "Name": "ROLE_PERMISSION_USAGE_GUIDE.md",
+    "Date": "2025-10-16"
+  },
+  {
+    "Name": "USER_API_PERMISSION_FIX.md",
+    "Date": "2025-10-16"
+  },
+  {
+    "Name": "TOKEN_EXPIRATION_GUIDE.md",
+    "Date": "2025-10-16"
+  },
+  {
+    "Name": "USER_DELETE_TRANSFER_LOGIC.md",
+    "Date": "2025-10-16"
+  },
+  {
+    "Name": "WORK_LOG_MANAGE_USERS_DIALOG_FIX.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "ARTICLES_NAV_DEPARTMENT_OPTIMIZATION.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "WORK_LOG_MANAGE_USERS_REDESIGN.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "WORK_LOG_MANAGE_USERS_UI_ENHANCEMENT.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "WORK_LOG_ENTRY_LAYOUT_V2.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "ARTICLES_NAV_THREE_LEVEL_FIX.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "ARTICLES_NAV_LABEL_TRUNCATE.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "WORK_LOG_WEEK_DAYS_UPDATE.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "ARTICLES_BATCH_MANAGEMENT.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "WORK_LOG_STATISTICS_REFACTOR.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "WORK_LOG_STATISTICS_BACKEND_FIX.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "WORK_LOG_ENTRY_CELL_OPTIMIZATION.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "WORK_LOG_GROUP_PRESETS.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "WORK_LOG_NAV_OPTIMIZATION.md",
+    "Date": "2025-10-17"
+  },
+  {
+    "Name": "TOKEN_STORAGE_MIGRATION.md",
+    "Date": "2025-10-20"
+  },
+  {
+    "Name": "TOKEN_STORAGE_FIX_LOGIN_ISSUE.md",
+    "Date": "2025-10-20"
+  },
+  {
+    "Name": "ARTICLE_BATCH_MANAGE_PERMISSION.md",
+    "Date": "2025-10-21"
+  },
+  {
+    "Name": "PERFORMANCE_EXPORT_FEATURE.md",
+    "Date": "2025-10-21"
+  },
+  {
+    "Name": "ARTICLE_DELETE_PERMISSION.md",
+    "Date": "2025-10-21"
+  },
+  {
+    "Name": "USER_CENTER_HIRE_DATE_DISPLAY.md",
+    "Date": "2025-10-21"
+  },
+  {
+    "Name": "PDF_FONT_FIX_GUIDE.md",
+    "Date": "2025-10-21"
+  },
+  {
+    "Name": "FIX_HIRE_DATE_NOT_SET.md",
+    "Date": "2025-10-21"
+  },
+  {
+    "Name": "PERSONAL_PERFORMANCE_PDF_EXPORT.md",
+    "Date": "2025-10-21"
+  },
+  {
+    "Name": "PROJECT_REPORT_EXPORT.md",
+    "Date": "2025-10-21"
+  },
+  {
+    "Name": "TIME_HANDLING_EXPLANATION.md",
+    "Date": "2025-10-22"
+  },
+  {
+    "Name": "NOTIFICATION_AND_TASK_LIMIT_FIX.md",
+    "Date": "2025-10-22"
+  },
+  {
+    "Name": "TOKEN_MANAGEMENT_GUIDE.md",
+    "Date": "2025-10-22"
+  },
+  {
+    "Name": "TEST_NOTIFICATION.md",
+    "Date": "2025-10-22"
+  },
+  {
+    "Name": "QUICK_REFERENCE.md",
+    "Date": "2025-10-22"
+  },
+  {
+    "Name": "SCHEDULED_NOTIFICATION_GUIDE.md",
+    "Date": "2025-10-22"
+  },
+  {
+    "Name": "ROOT_CAUSE_FIX_SUMMARY.md",
+    "Date": "2025-10-22"
+  },
+  {
+    "Name": "BACKEND_TIME_FIX.md",
+    "Date": "2025-10-22"
+  },
+  {
+    "Name": "NOTIFICATION_IMPLEMENTATION_SUMMARY.md",
+    "Date": "2025-10-22"
+  },
+  {
+    "Name": "FIX_TIME_ZONE_ISSUE.md",
+    "Date": "2025-10-22"
+  },
+  {
+    "Name": "TIME_FIX_COMPLETE.md",
+    "Date": "2025-10-22"
+  },
+  {
+    "Name": "FIX_REJECT_DIALOG_ISSUES.md",
+    "Date": "2025-10-23"
+  },
+  {
+    "Name": "DATABASE_TIME_STORAGE.md",
+    "Date": "2025-10-23"
+  },
+  {
+    "Name": "ADD_DELETE_FEATURE_TO_NEW_VIEW.md",
+    "Date": "2025-10-24"
+  },
+  {
+    "Name": "WORK_LOG_PERMISSION_GUIDE.md",
+    "Date": "2025-10-24"
+  },
+  {
+    "Name": "PROJECT_DELETE_FEATURE_GUIDE.md",
+    "Date": "2025-10-24"
+  },
+  {
+    "Name": "WORK_WEEK_IMPROVEMENTS.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "ARTICLE_EDITOR_IMPROVEMENTS.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "FIX_ARTICLE_PERMISSION_COMPLETE.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "CHANGELOG_v3.2.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "WORK_LOG_EXPORT_FEATURE.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "WORK_LOG_EXPORT_JOINEDLOAD_FIX.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "WORK_LOG_EXPORT_YEAR_ATTRIBUTE_FIX.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "WORK_LOG_EXPORT_YEAR_FIX.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "FIX_WORK_LOG_ENTRY_DELETE.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "WORK_LOG_SUBJECT_TAG_FEATURE.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "USER_CENTER_AVATAR_REFRESH_FIX.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "FIX_ARTICLE_CREATE_ROUTE_ERROR.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "WORK_LOG_NAVIGATION_INDENT_GUIDE.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "WORK_LOG_ARCHIVED_TOGGLE_FEATURE.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "WORK_LOG_ADVANCED_EXPORT.md",
+    "Date": "2025-10-27"
+  },
+  {
+    "Name": "ARTICLE_EDITOR_TOOLBAR_STICKY_FIX.md",
+    "Date": "2025-10-28"
+  },
+  {
+    "Name": "TIMELINE_Z_INDEX_FIX.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "TIMELINE_UI_ENHANCEMENT.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "TASK_POOL_PERFORMANCE_OPTIMIZATION.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "TIME_ZONE_FIX_COMPLETE.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "REDIS_WEEK2_OPTIMIZATION_COMPLETE.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "TIME_ZONE_FIX_ANALYSIS.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "TIMELINE_FINAL_SUMMARY.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "TIMELINE_SCREENSHOTS_FEATURE.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "TIMELINE_IMAGE_DEDUPLICATION.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "TIMELINE_TIME_BASED_IMAGE_MATCHING.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "TIMELINE_COMPLETE_FINAL.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "TIMELINE_ENHANCEMENT_COMPLETE.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "REDIS_DEPLOYMENT_GUIDE.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "REDIS_INTEGRATION_FINAL_SUMMARY.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "REDIS_NOTIFICATION_SYSTEM.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "REDIS_CACHE_FINAL_FIX.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "REDIS_CACHE_STRATEGY.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "REDIS_CACHE_UPDATE_CHECKLIST.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "REDIS_OPTIMIZATION_GUIDE.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "APPLY_PERFORMANCE_OPTIMIZATION.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "CACHE_FIX_SUMMARY.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "CACHE_INVALIDATION_FIX.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "REDIS_QUICK_START.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "REDIS_PERSISTENCE_GUIDE.md",
+    "Date": "2025-10-31"
+  },
+  {
+    "Name": "MY_WORKSPACE_FILTER_ENHANCEMENT.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "WORK_LOG_DARK_MODE_FIX.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "PAGE_HEADER_ENHANCEMENT.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "MIGRATION_TO_REDIS_NOTIFICATION.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "WEBSOCKET_REDIS_NOTIFICATION_UPGRADE.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "PERSONAL_PERFORMANCE_HEADER_UNIFICATION.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "LOGIN_XINGXIANG_ANIMATION.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "LOGIN_PERSISTENCE_AND_NOTIFICATION_ENHANCEMENT.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "REDIS_OFFLINE_NOTIFICATION.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "SYSTEM_NOTIFICATION_OPTIMIZATION.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "FIX_NOTIFICATION_DUPLICATE.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "FIX_BACKEND_NOTIFICATION_DUPLICATE.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "TASK_POOL_FILTER_ENHANCEMENT.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "TASK_IMAGE_URL_DISPLAY_ENHANCEMENT.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "TASK_POOL_EXPORT_FEATURE.md",
+    "Date": "2025-11-03"
+  },
+  {
+    "Name": "MARKDOWN_OPTIMIZATION_SUCCESS.md",
+    "Date": "2025-11-04"
+  },
+  {
+    "Name": "MARKDOWN_IMPORT_OPTIMIZATION.md",
+    "Date": "2025-11-04"
+  },
+  {
+    "Name": "MARKDOWN_OPTIMIZATION_FINAL.md",
+    "Date": "2025-11-04"
+  },
+  {
+    "Name": "MARKDOWN_IMPORT_FEATURE.md",
+    "Date": "2025-11-04"
+  },
+  {
+    "Name": "WORK_LOG_ARTICLE_SEARCH_ENHANCEMENT.md",
+    "Date": "2025-11-04"
+  },
+  {
+    "Name": "MARKDOWN_OPTIMIZATION_COMPLETE.md",
+    "Date": "2025-11-04"
+  },
+  {
+    "Name": "TOKEN_EXPIRATION_MECHANISM.md",
+    "Date": "2025-11-04"
+  },
+  {
+    "Name": "WORK_RECORDS_CREATE_SIMPLIFY.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_BATCH_AND_IMPORT_FIX.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "CSS_ERROR_FIX.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_DETAIL_SIMPLIFY.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "PROJECT_MANAGEMENT_ARTICLE_JUMP_AND_INDENT_FIX.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "FINAL_SUMMARY.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "REPLACE_VHTML_WITH_PREVIEW.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "ART_WANG_PREVIEW_COMPONENT.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "ARTICLE_INFO_DRAWER_PROGRESS.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "ARTICLE_LINK_JUMP_FIX.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "ARTICLE_CREATE_AUTO_SELECT_USERS.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_AUTO_SELECT_LATEST.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_AUTO_REFRESH_FIX.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_API_FIX.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "TOKEN_ISSUE_DIAGNOSIS.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "TOKEN_FIX_COMPLETE.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_NAV_FINAL_ENHANCEMENTS.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_SCROLLBAR_FIX_FINAL.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_EDIT_MODE_FIX.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "REMEMBER_PASSWORD_FEATURE.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_TOOLBAR_FIX_FINAL.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "ARTICLE_INFO_DRAWER_REDESIGN.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_FEATURE_FINAL.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_LOG_AUTO_SELECT_AND_DATE_FIX.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_NAV_ENHANCEMENT.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_LAYOUT_OPTIMIZATION.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "WORK_RECORDS_LAYOUT_FIX_COMPLETE.md",
+    "Date": "2025-11-05"
+  },
+  {
+    "Name": "_sorted_docs_by_date.json",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "WORK_RECORDS_LAYOUT_FIX.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "PDF_HEADER_FOOTER_FIX.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "PDF_HEADER_FOOTER_CUSTOMIZATION.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "PDF_MARGIN_OPTIMIZATION.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "PDF_LAYOUT_OPTIMIZATION.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "NOTIFICATION_AUTO_READ_FIX.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "NAVIGATION_REFACTOR_MEETING_AND_MODEL.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "NAVIGATION_STYLE_AND_EXPAND_FIX.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "NAVIGATION_STYLE_FIX_AND_HEADER_REPLACEMENT.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "NAVIGATION_ACTIVE_STATE_ENHANCEMENT.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "PROJECT_ARTICLE_DRAWER_STYLE_FIX.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "REMOVE_CATEGORY_HEADER.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "REMOVE_TOP_BAR_OPTIMIZATION.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "ARTICLE_SUMMARY_TO_DRAWER.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "ART_WANG_PREVIEW_LINTER_FIX.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "CARD_BORDER_FIX.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "ROUTE_FIX_403.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "PROJECT_ARTICLE_PDF_EXPORT_FIX.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "DOCS_SUMMARY_BY_DATE.md",
+    "Date": "2025-11-06"
+  },
+  {
+    "Name": "EXAMPLE_VUE_PARSER_FIX.md",
+    "Date": "2025-11-06"
+  }
+]

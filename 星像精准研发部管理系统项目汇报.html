@@ -1,0 +1,1091 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>星像精准研发部管理系统 - 项目汇报</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'SimSun', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        overflow: hidden;
+      }
+
+      .presentation-container {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+      }
+
+      .slide {
+        width: 100%;
+        height: 100%;
+        padding: 4vh 6vw;
+        display: none;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        overflow-y: auto;
+      }
+
+      .slide.active {
+        display: flex;
+      }
+
+      .slide h1 {
+        font-size: 4.5vw;
+        color: #2c3e50;
+        margin-bottom: 2vh;
+        text-align: center;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .slide h2 {
+        font-size: 3.5vw;
+        color: #34495e;
+        margin-bottom: 3vh;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .slide h3 {
+        font-size: 2.5vw;
+        color: #2c3e50;
+        margin-bottom: 2vh;
+        font-weight: 600;
+      }
+
+      .slide h4 {
+        font-size: 1.8vw;
+        color: #34495e;
+        margin-bottom: 1.5vh;
+        font-weight: 600;
+      }
+
+      .slide p {
+        font-size: 1.4vw;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 1vh;
+        text-align: left;
+      }
+
+      .slide ul {
+        font-size: 1.4vw;
+        color: #555;
+        line-height: 1.8;
+        margin-left: 2vw;
+      }
+
+      .slide li {
+        margin-bottom: 0.8vh;
+      }
+
+      .nav-controls {
+        position: fixed;
+        bottom: 3vh;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 1vw;
+        z-index: 1000;
+      }
+
+      .nav-btn {
+        padding: 1vh 2vw;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.2vw;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+      }
+
+      .nav-btn:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+      }
+
+      .nav-btn:disabled {
+        background: #bdc3c7;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .highlight-box {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        padding: 3vh 4vw;
+        border-radius: 15px;
+        margin: 3vh 0;
+        font-size: 1.8vw;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+        font-weight: 600;
+        line-height: 1.5;
+      }
+
+      .project-summary {
+        background: rgba(236, 240, 241, 0.8);
+        padding: 2.5vh 3vw;
+        border-radius: 12px;
+        margin: 2vh 0;
+        border-left: 5px solid #3498db;
+      }
+
+      .project-summary p {
+        font-size: 1.5vw;
+        color: #2c3e50;
+        line-height: 1.7;
+        text-align: center;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2vw;
+        width: 100%;
+        margin: 3vh 0;
+      }
+
+      .metric-card {
+        background: white;
+        padding: 2.5vh 2vw;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .metric-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .metric-number {
+        font-size: 3.5vw;
+        font-weight: 700;
+        color: #3498db;
+        margin-bottom: 1vh;
+      }
+
+      .metric-label {
+        font-size: 1.3vw;
+        color: #7f8c8d;
+        font-weight: 600;
+      }
+
+      .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3vw;
+        width: 100%;
+        align-items: start;
+      }
+
+      .function-analysis-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2vw;
+        width: 100%;
+        margin: 2vh 0;
+      }
+
+      .function-card {
+        background: white;
+        padding: 2vh 1.5vw;
+        border-radius: 12px;
+        margin-bottom: 1.5vh;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .function-card:hover {
+        transform: translateY(-3px);
+      }
+
+      .function-card h4 {
+        color: #2c3e50;
+        margin-bottom: 1vh;
+        font-size: 1.4vw;
+        border-bottom: 2px solid #ecf0f1;
+        padding-bottom: 0.8vh;
+      }
+
+      .function-card p {
+        margin-bottom: 0.8vh;
+        font-size: 1.1vw;
+      }
+
+      .function-card ul {
+        margin-left: 1.2vw;
+      }
+
+      .function-card li {
+        font-size: 1.1vw;
+        margin-bottom: 0.4vh;
+      }
+
+      .roles-layout {
+        display: flex;
+        gap: 3vw;
+        width: 100%;
+        margin: 2vh 0;
+      }
+
+      .roles-chart-section {
+        flex: 0 0 35%;
+      }
+
+      .roles-details-grid {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5vw;
+      }
+
+      .role-card {
+        background: white;
+        padding: 1.8vh 1.5vw;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .role-card:hover {
+        transform: translateY(-3px);
+      }
+
+      .role-card h4 {
+        color: #2c3e50;
+        margin-bottom: 1vh;
+        font-size: 1.3vw;
+        border-bottom: 2px solid #ecf0f1;
+        padding-bottom: 0.8vh;
+      }
+
+      .role-card ul {
+        margin-left: 1.2vw;
+      }
+
+      .role-card li {
+        font-size: 1vw;
+        margin-bottom: 0.4vh;
+      }
+
+      .efficiency-card {
+        background: white;
+        padding: 2.5vh 2vw;
+        border-radius: 12px;
+        margin-bottom: 2vh;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .efficiency-card:hover {
+        transform: translateY(-3px);
+      }
+
+      .efficiency-card h4 {
+        color: #2c3e50;
+        margin-bottom: 1.5vh;
+        font-size: 1.6vw;
+        border-bottom: 2px solid #ecf0f1;
+        padding-bottom: 1vh;
+      }
+
+      .efficiency-card p {
+        margin-bottom: 1vh;
+        font-size: 1.2vw;
+      }
+
+      .efficiency-card ul {
+        margin-left: 1.5vw;
+      }
+
+      .efficiency-card li {
+        font-size: 1.2vw;
+        margin-bottom: 0.5vh;
+      }
+
+      .chart-container {
+        width: 100%;
+        height: 40vh;
+        margin: 2vh 0;
+        background: white;
+        border-radius: 12px;
+        padding: 2vh;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .chart-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3vw;
+        width: 100%;
+        margin: 2vh 0;
+      }
+
+      .stats-card {
+        background: white;
+        padding: 3vh 2.5vw;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .stats-card h3 {
+        color: #2c3e50;
+        margin-bottom: 2vh;
+        text-align: center;
+        font-size: 2vw;
+      }
+
+      .efficiency-stats {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5vh;
+      }
+
+      .efficiency-item {
+        display: flex;
+        align-items: center;
+        padding: 1.5vh 2vw;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #3498db;
+      }
+
+      .efficiency-number {
+        font-size: 1.4vw;
+        font-weight: 700;
+        color: #3498db;
+        min-width: 120px;
+        text-align: center;
+      }
+
+      .efficiency-label {
+        font-size: 1.2vw;
+        color: #555;
+        flex: 1;
+      }
+
+      .project-list {
+        width: 100%;
+        margin: 2vh 0;
+      }
+
+      .project-item {
+        background: white;
+        padding: 2.5vh 3vw;
+        border-radius: 12px;
+        margin-bottom: 2vh;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .project-item:hover {
+        transform: translateY(-3px);
+      }
+
+      .project-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5vh;
+      }
+
+      .project-header h3 {
+        color: #2c3e50;
+        font-size: 2.2vw;
+      }
+
+      .project-status {
+        background: #27ae60;
+        color: white;
+        padding: 0.5vh 1.5vw;
+        border-radius: 20px;
+        font-size: 1.1vw;
+        font-weight: 600;
+      }
+
+      .project-details p {
+        margin-bottom: 1vh;
+        font-size: 1.3vw;
+        line-height: 1.6;
+      }
+
+      .project-details strong {
+        color: #2c3e50;
+      }
+
+      .slide-indicator {
+        position: fixed;
+        top: 3vh;
+        right: 3vw;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 1vh 2vw;
+        border-radius: 20px;
+        font-size: 1.2vw;
+        color: #2c3e50;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 2vh 4vw;
+        }
+
+        .slide h1 {
+          font-size: 6vw;
+        }
+
+        .slide h2 {
+          font-size: 5vw;
+        }
+
+        .two-column {
+          grid-template-columns: 1fr;
+          gap: 2vh;
+        }
+
+        .chart-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .metrics-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="presentation-container">
+      <!-- 幻灯片指示器 -->
+      <div class="slide-indicator">
+        <span id="currentSlide">1</span> / <span id="totalSlides">8</span>
+      </div>
+
+      <!-- 幻灯片 1: 项目标题页 -->
+      <div class="slide active">
+        <h1>🏥 星像精准研发部管理系统</h1>
+        <h2>项目汇报</h2>
+        <div class="highlight-box"> 基于Vue3 + FastAPI的现代化医学影像标注全流程管理平台 </div>
+        <div class="project-summary">
+          <p
+            >本项目是一个专业的医学影像标注全流程管理平台，集成项目管理、任务分配、标注审核、绩效统计、团队协作于一体的现代化内部管理系统。采用前后端分离架构，实现了完善的RBAC权限管理和多模块协作功能。</p
+          >
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-number">6</div>
+            <div class="metric-label">核心功能模块</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-number">4</div>
+            <div class="metric-label">用户角色</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-number">20+</div>
+            <div class="metric-label">子功能页面</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-number">100%</div>
+            <div class="metric-label">功能完成度</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 2: 项目概览 -->
+      <div class="slide">
+        <h2>项目概览</h2>
+        <div class="project-list">
+          <div class="project-item">
+            <div class="project-header">
+              <h3>🏥 星像精准研发部管理系统</h3>
+              <span class="project-status">已完成</span>
+            </div>
+            <div class="project-details">
+              <p><strong>项目目标：</strong>构建完整的医学影像标注全流程管理平台</p>
+              <p
+                ><strong>主要技术：</strong>Vue 3.5.12, TypeScript 5.6.3, FastAPI 0.104.1,
+                PostgreSQL 12+, Redis 6.0+, MinIO 7.2.0</p
+              >
+              <p><strong>应用领域：</strong>医学影像标注、项目管理、任务协作、绩效统计</p>
+              <p><strong>项目成果：</strong>实现完整的RBAC权限管理和多模块协作平台</p>
+              <p
+                ><strong>核心功能：</strong>6大功能模块 -
+                项目管理、标注任务、工作日志、知识文章、标注绩效、系统管理</p
+              >
+              <p
+                ><strong>技术特色：</strong>前后端分离架构，RESTful API +
+                WebSocket实时通信，RBAC权限控制</p
+              >
+              <p
+                ><strong>管理效率：</strong
+                >支持多角色协作，智能质控审核，实时数据统计和可视化分析</p
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 3: 技术架构 -->
+      <div class="slide">
+        <h2>技术架构与系统设计</h2>
+        <div class="two-column">
+          <div>
+            <div class="efficiency-card">
+              <h4>🎨 前端技术栈</h4>
+              <p><strong>框架：</strong>Vue 3.5.12 + TypeScript 5.6.3</p>
+              <p><strong>UI组件：</strong>Element Plus 2.8.0</p>
+              <p><strong>状态管理：</strong>Pinia 3.0.2</p>
+              <p><strong>路由：</strong>Vue Router 4.4.2</p>
+              <p><strong>构建工具：</strong>Vite 6.1.0</p>
+              <p><strong>图表：</strong>ECharts 5.6.0</p>
+              <p><strong>编辑器：</strong>WangEditor 5.1.23</p>
+              <p><strong>工具库：</strong>VueUse 11.0.0, Axios 1.7.5</p>
+            </div>
+            <div class="chart-container">
+              <canvas id="frontendTechChart"></canvas>
+            </div>
+          </div>
+          <div>
+            <div class="efficiency-card">
+              <h4>⚙️ 后端技术栈</h4>
+              <p><strong>框架：</strong>FastAPI 0.104.1</p>
+              <p><strong>数据库：</strong>PostgreSQL 12+ + SQLAlchemy 2.0.23</p>
+              <p><strong>缓存：</strong>Redis 6.0+</p>
+              <p><strong>对象存储：</strong>MinIO 7.2.0</p>
+              <p><strong>认证：</strong>JWT + Python-Jose 3.3.0</p>
+              <p><strong>数据验证：</strong>Pydantic 2.5.0</p>
+              <p><strong>任务调度：</strong>APScheduler 3.10.4</p>
+              <p><strong>报表生成：</strong>ReportLab 4.0+</p>
+            </div>
+            <div class="chart-container">
+              <canvas id="backendTechChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 4: 系统架构 -->
+      <div class="slide">
+        <h2>系统架构与部署</h2>
+        <div class="two-column">
+          <div>
+            <div class="efficiency-card">
+              <h4>🏗️ 系统架构</h4>
+              <p><strong>架构模式：</strong>前后端分离</p>
+              <p><strong>API设计：</strong>RESTful API + WebSocket</p>
+              <p><strong>权限管理：</strong>RBAC (基于角色的访问控制)</p>
+              <p><strong>数据流：</strong>Vue → API → FastAPI → PostgreSQL</p>
+              <p><strong>文件存储：</strong>MinIO对象存储</p>
+              <p><strong>缓存策略：</strong>Redis缓存 + 会话管理</p>
+            </div>
+            <div class="efficiency-card">
+              <h4>🔄 版本控制</h4>
+              <p><strong>平台：</strong>Git版本控制</p>
+              <p><strong>工作流：</strong>Git-Flow分支模型</p>
+              <p><strong>提交规范：</strong>Conventional Commits</p>
+              <p><strong>代码质量：</strong>ESLint + Prettier</p>
+              <p><strong>自动化：</strong>pre-commit hooks</p>
+            </div>
+          </div>
+          <div>
+            <div class="chart-container">
+              <canvas id="systemArchChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 5: 核心功能模块 -->
+      <div class="slide">
+        <h2>六大核心功能模块</h2>
+        <div class="chart-grid">
+          <div class="stats-card">
+            <h3>功能模块分布</h3>
+            <div class="chart-container">
+              <canvas id="modulesChart"></canvas>
+            </div>
+          </div>
+          <div class="stats-card">
+            <h3>模块详细功能</h3>
+            <div class="efficiency-stats">
+              <div class="efficiency-item">
+                <div class="efficiency-number">项目管理</div>
+                <div class="efficiency-label"
+                  >项目仪表板、项目列表、动态分类、批量导入、文章管理</div
+                >
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">标注任务</div>
+                <div class="efficiency-label">任务池、工作台、任务审核、批量操作、质量控制</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">工作日志</div>
+                <div class="efficiency-label">工作周管理、日志条目、统计分析、报表生成</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">知识文章</div>
+                <div class="efficiency-label">分类管理、发布系统、实时协作、版本控制</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">标注绩效</div>
+                <div class="efficiency-label">个人绩效、团队绩效、项目仪表板、数据分析</div>
+              </div>
+              <div class="efficiency-item">
+                <div class="efficiency-number">系统管理</div>
+                <div class="efficiency-label">用户管理、角色管理、权限配置、系统设置</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 6: 功能详细分析 -->
+      <div class="slide">
+        <h2>功能详细分析与技术特色</h2>
+        <div class="function-analysis-grid">
+          <div class="function-card">
+            <h4>📊 项目管理系统</h4>
+            <p><strong>项目仪表板：</strong>项目概览、数据分析、状态筛选</p>
+            <p><strong>项目列表：</strong>三级树形导航、项目状态管理、详情查看</p>
+            <p><strong>动态分类：</strong>文章分类管理、项目关联</p>
+            <p><strong>批量任务导入：</strong>Excel导入、数据验证、批量处理</p>
+            <p><strong>文章管理：</strong>多类型支持、Markdown/Word导入、富文本编辑</p>
+          </div>
+          <div class="function-card">
+            <h4>🎯 标注任务系统</h4>
+            <p><strong>任务池：</strong>任务筛选、批量操作、状态管理</p>
+            <p><strong>标注工作台：</strong>任务详情、标注界面、进度跟踪</p>
+            <p><strong>任务审核：</strong>质量控制、审核流程、反馈机制</p>
+            <p><strong>批量操作：</strong>任务分配、状态更新、导出功能</p>
+          </div>
+          <div class="function-card">
+            <h4>📝 工作日志系统</h4>
+            <p><strong>工作周管理：</strong>周期设置、时间规划</p>
+            <p><strong>日志条目：</strong>工作记录、时间统计、任务关联</p>
+            <p><strong>统计分析：</strong>工作量统计、效率分析</p>
+            <p><strong>报表生成：</strong>周报、月报、自定义报表</p>
+          </div>
+          <div class="function-card">
+            <h4>📚 知识文章系统</h4>
+            <p><strong>分类管理：</strong>层级分类、动态管理</p>
+            <p><strong>发布系统：</strong>文章编辑、版本控制、发布流程</p>
+            <p><strong>实时协作：</strong>WebSocket支持、多人编辑</p>
+            <p><strong>版本控制：</strong>历史版本、差异对比、回滚功能</p>
+          </div>
+          <div class="function-card">
+            <h4>📈 标注绩效系统</h4>
+            <p><strong>个人绩效：</strong>任务完成度、质量评分、效率统计</p>
+            <p><strong>团队绩效：</strong>团队排名、协作效率、项目贡献</p>
+            <p><strong>项目仪表板：</strong>项目进度、资源分配、质量监控</p>
+            <p><strong>数据分析：</strong>多维度统计、趋势分析、可视化展示</p>
+          </div>
+          <div class="function-card">
+            <h4>⚙️ 系统管理</h4>
+            <p><strong>用户管理：</strong>用户信息、角色分配、状态管理</p>
+            <p><strong>角色管理：</strong>权限配置、菜单控制、动态权限</p>
+            <p><strong>系统设置：</strong>参数配置、系统监控、日志管理</p>
+            <p><strong>数据管理：</strong>备份恢复、数据迁移、清理维护</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 7: 用户角色与权限 -->
+      <div class="slide">
+        <h2>用户角色与权限管理</h2>
+        <div class="roles-layout">
+          <div class="roles-chart-section">
+            <div class="chart-container">
+              <canvas id="rolesChart"></canvas>
+            </div>
+          </div>
+          <div class="roles-details-grid">
+            <div class="role-card">
+              <h4>👑 管理员 (Admin)</h4>
+              <ul>
+                <li>系统全部功能访问权限</li>
+                <li>用户管理和角色分配</li>
+                <li>系统配置和维护</li>
+                <li>数据备份和恢复</li>
+                <li>审计日志查看</li>
+              </ul>
+            </div>
+            <div class="role-card">
+              <h4>👨‍💼 审核员 (Reviewer)</h4>
+              <ul>
+                <li>任务审核和质量控制</li>
+                <li>项目进度监控</li>
+                <li>绩效统计查看</li>
+                <li>团队协作功能</li>
+                <li>报表生成和导出</li>
+              </ul>
+            </div>
+            <div class="role-card">
+              <h4>🎯 标注员 (Annotator)</h4>
+              <ul>
+                <li>任务领取和标注</li>
+                <li>个人绩效查看</li>
+                <li>工作日志记录</li>
+                <li>知识文章阅读</li>
+                <li>基础协作功能</li>
+              </ul>
+            </div>
+            <div class="role-card">
+              <h4>🧠 算法工程师 (Algorithm)</h4>
+              <ul>
+                <li>模型测试和验证</li>
+                <li>算法文档管理</li>
+                <li>技术文章发布</li>
+                <li>项目技术支持</li>
+                <li>数据分析功能</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 幻灯片 8: 项目成果与未来规划 -->
+      <div class="slide">
+        <h2>项目成果与未来规划</h2>
+        <div class="two-column">
+          <div class="efficiency-card">
+            <h4>🎉 核心成果</h4>
+            <ul>
+              <li>完成六大功能模块的全面开发</li>
+              <li>实现RBAC权限管理体系，支持4种用户角色</li>
+              <li>建立实时协作机制，提升团队工作效率</li>
+              <li>构建数据可视化平台，支持多维度统计分析</li>
+              <li>优化用户体验设计，实现响应式布局</li>
+              <li>建立完善的代码规范和开发流程</li>
+              <li>实现前后端分离架构，提高系统可维护性</li>
+            </ul>
+          </div>
+          <div class="efficiency-card">
+            <h4>🚀 未来规划</h4>
+            <ul>
+              <li>集成AI辅助标注功能，提升标注效率</li>
+              <li>开发移动端应用，支持随时随地办公</li>
+              <li>实现多语言国际化，扩大用户群体</li>
+              <li>增强数据分析能力，提供智能决策支持</li>
+              <li>建立第三方系统集成接口，扩展生态</li>
+              <li>优化性能和安全性，支持更大规模部署</li>
+              <li>引入机器学习算法，实现智能任务分配</li>
+            </ul>
+          </div>
+        </div>
+        <div class="metrics-grid" style="margin-top: 3vh">
+          <div class="metric-card">
+            <div class="metric-number">6</div>
+            <div class="metric-label">核心功能模块</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-number">4</div>
+            <div class="metric-label">用户角色</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-number">20+</div>
+            <div class="metric-label">子功能页面</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-number">100%</div>
+            <div class="metric-label">功能完成度</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 导航控制 -->
+      <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">上一页</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一页</button>
+      </div>
+    </div>
+
+    <script>
+      let currentSlideIndex = 0
+      const slides = document.querySelectorAll('.slide')
+      const totalSlides = slides.length
+
+      // 更新幻灯片指示器
+      function updateSlideIndicator() {
+        document.getElementById('currentSlide').textContent = currentSlideIndex + 1
+        document.getElementById('totalSlides').textContent = totalSlides
+      }
+
+      // 显示指定幻灯片
+      function showSlide(index) {
+        slides.forEach((slide) => slide.classList.remove('active'))
+        slides[index].classList.add('active')
+
+        // 更新导航按钮状态
+        document.getElementById('prevBtn').disabled = index === 0
+        document.getElementById('nextBtn').disabled = index === totalSlides - 1
+
+        updateSlideIndicator()
+
+        // 延迟初始化图表，确保DOM已渲染
+        setTimeout(() => {
+          initializeChartsForCurrentSlide()
+        }, 100)
+      }
+
+      // 切换幻灯片
+      function changeSlide(direction) {
+        const newIndex = currentSlideIndex + direction
+        if (newIndex >= 0 && newIndex < totalSlides) {
+          currentSlideIndex = newIndex
+          showSlide(currentSlideIndex)
+        }
+      }
+
+      // 键盘导航
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft') changeSlide(-1)
+        if (e.key === 'ArrowRight') changeSlide(1)
+      })
+
+      // 初始化当前幻灯片的图表
+      function initializeChartsForCurrentSlide() {
+        switch (currentSlideIndex) {
+          case 2:
+            initFrontendTechChart()
+            initBackendTechChart()
+            break
+          case 3:
+            initSystemArchChart()
+            break
+          case 4:
+            initModulesChart()
+            break
+          case 6:
+            initRolesChart()
+            break
+        }
+      }
+
+      // 前端技术栈图表
+      function initFrontendTechChart() {
+        const ctx = document.getElementById('frontendTechChart')
+        if (!ctx || ctx.chart) return
+
+        ctx.chart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Vue 3', 'TypeScript', 'Element Plus', 'Vite', 'Pinia', '其他工具'],
+            datasets: [
+              {
+                data: [25, 20, 15, 15, 10, 15],
+                backgroundColor: ['#4FC08D', '#3178C6', '#409EFF', '#646CFF', '#FFD93D', '#95A5A6'],
+                borderWidth: 2,
+                borderColor: '#fff'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 15,
+                  font: { size: 16 }
+                }
+              }
+            }
+          }
+        })
+      }
+
+      // 后端技术栈图表
+      function initBackendTechChart() {
+        const ctx = document.getElementById('backendTechChart')
+        if (!ctx || ctx.chart) return
+
+        ctx.chart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['FastAPI', 'PostgreSQL', 'Redis', 'MinIO', 'SQLAlchemy', '其他组件'],
+            datasets: [
+              {
+                data: [25, 20, 15, 15, 15, 10],
+                backgroundColor: ['#009688', '#336791', '#DC382D', '#C72E29', '#D71F00', '#95A5A6'],
+                borderWidth: 2,
+                borderColor: '#fff'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 15,
+                  font: { size: 16 }
+                }
+              }
+            }
+          }
+        })
+      }
+
+      // 系统架构图表
+      function initSystemArchChart() {
+        const ctx = document.getElementById('systemArchChart')
+        if (!ctx || ctx.chart) return
+
+        ctx.chart = new Chart(ctx, {
+          type: 'radar',
+          data: {
+            labels: ['前端界面', '后端API', '数据库', '缓存系统', '文件存储', '权限管理'],
+            datasets: [
+              {
+                label: '完成度',
+                data: [100, 100, 100, 100, 100, 100],
+                backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                borderColor: '#3498db',
+                borderWidth: 2,
+                pointBackgroundColor: '#3498db'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              r: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                  stepSize: 20,
+                  font: { size: 14 }
+                },
+                pointLabels: {
+                  font: { size: 16 }
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        })
+      }
+
+      // 功能模块图表
+      function initModulesChart() {
+        const ctx = document.getElementById('modulesChart')
+        if (!ctx || ctx.chart) return
+
+        ctx.chart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: ['项目管理', '标注任务', '工作日志', '知识文章', '标注绩效', '系统管理'],
+            datasets: [
+              {
+                data: [20, 25, 15, 15, 15, 10],
+                backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#34495e']
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'right',
+                labels: {
+                  padding: 10,
+                  font: { size: 16 }
+                }
+              }
+            }
+          }
+        })
+      }
+
+      // 用户角色图表
+      function initRolesChart() {
+        const ctx = document.getElementById('rolesChart')
+        if (!ctx || ctx.chart) return
+
+        ctx.chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['管理员', '审核员', '标注员', '算法工程师'],
+            datasets: [
+              {
+                label: '权限级别',
+                data: [100, 80, 60, 75],
+                backgroundColor: ['#e74c3c', '#f39c12', '#3498db', '#9b59b6']
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100,
+                title: {
+                  display: true,
+                  text: '权限级别(%)',
+                  font: { size: 16 }
+                },
+                ticks: {
+                  font: { size: 14 }
+                }
+              },
+              x: {
+                ticks: {
+                  font: { size: 14 }
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        })
+      }
+
+      // 初始化
+      document.addEventListener('DOMContentLoaded', function () {
+        // 配置Chart.js全局字体设置，确保中文字符正确显示
+        Chart.defaults.font.family =
+          "'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'SimSun', sans-serif"
+        Chart.defaults.font.size = 16
+        Chart.defaults.color = '#333'
+
+        showSlide(0)
+        setTimeout(() => {
+          initializeChartsForCurrentSlide()
+        }, 500)
+      })
+    </script>
+  </body>
+</html>

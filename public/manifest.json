@@ -1,0 +1,16 @@
+{
+  "name": "星像精准研发部管理系统",
+  "short_name": "星像研发系统",
+  "description": "星像精准研发部管理系统 - 项目与任务管理平台",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1890ff",
+  "icons": [
+    {
+      "src": "/xingxiang_logo.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}

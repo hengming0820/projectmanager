@@ -1,0 +1,1746 @@
+<template>
+  <div class="work-log-management">
+    <!-- 页面头部 -->
+    <el-card class="art-custom-card header-card">
+      <div class="page-header-content">
+        <div class="header-left">
+          <h2>工作日志管理</h2>
+          <p>管理团队工作日志，创建工作周模板，查看工作进度</p>
+        </div>
+        <div class="header-right">
+          <el-button type="primary" @click="createWorkWeek" v-if="canManageWorkLog">
+            <el-icon><Plus /></el-icon>
+            创建工作周
+          </el-button>
+          <el-button type="success" @click="refreshData">
+            <el-icon><Refresh /></el-icon>
+            刷新
+          </el-button>
+        </div>
+      </div>
+    </el-card>
+
+    <!-- 筛选条件 -->
+    <el-card class="art-custom-card filter-card">
+      <el-form :model="searchForm" inline>
+        <el-form-item label="状态">
+          <el-select v-model="searchForm.status" placeholder="选择状态" clearable style="width: 150px;">
+            <el-option label="活跃" value="active" />
+            <el-option label="已归档" value="archived" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="日期范围">
+          <el-date-picker
+            v-model="searchForm.dateRange"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+            style="width: 240px;"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSearch">
+            <el-icon><Search /></el-icon>
+            搜索
+          </el-button>
+          <el-button @click="resetSearch">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+
+    <!-- 工作周列表 -->
+    <el-card class="art-custom-card">
+      <template #header>
+        <div class="card-header">
+          <span>工作周列表</span>
+          <div class="header-actions">
+            <el-button-group>
+              <el-button 
+                :type="viewMode === 'card' ? 'primary' : ''" 
+                @click="viewMode = 'card'"
+                :icon="Grid"
+              >
+                卡片视图
+              </el-button>
+              <el-button 
+                :type="viewMode === 'table' ? 'primary' : ''" 
+                @click="viewMode = 'table'"
+                :icon="List"
+              >
+                列表视图
+              </el-button>
+            </el-button-group>
+          </div>
+        </div>
+      </template>
+
+      <!-- 卡片视图 -->
+      <div v-if="viewMode === 'card'" class="work-weeks-cards">
+        <div v-for="yearGroup in treeData" :key="yearGroup.id" class="year-group">
+          <!-- 年份标题 -->
+          <div class="year-header" @click="toggleYear(yearGroup.id)">
+            <el-icon><Calendar /></el-icon>
+            <span class="year-title">{{ yearGroup.label }}</span>
+            <el-tag type="info" size="small">{{ yearGroup.children?.length || 0 }}个月</el-tag>
+            <el-icon class="expand-icon" :class="{ 'is-expanded': expandedYears.has(yearGroup.id) }">
+              <ArrowRight />
+            </el-icon>
+          </div>
+          
+          <!-- 月份分组 -->
+          <div 
+            v-for="monthGroup in yearGroup.children" 
+            :key="monthGroup.id" 
+            class="month-group"
+            v-show="expandedYears.has(yearGroup.id)"
+          >
+            <div class="month-header" @click="toggleMonth(monthGroup.id)">
+              <el-icon><Clock /></el-icon>
+              <span class="month-title">{{ monthGroup.label }}</span>
+              <el-tag type="success" size="small">{{ monthGroup.children?.length || 0 }}周</el-tag>
+              <el-icon class="expand-icon" :class="{ 'is-expanded': expandedMonths.has(monthGroup.id) }">
+                <ArrowRight />
+              </el-icon>
+            </div>
+            
+            <!-- 工作周卡片 -->
+            <div class="work-weeks-grid" v-show="expandedMonths.has(monthGroup.id)">
+              <div
+                v-for="weekNode in monthGroup.children"
+                :key="weekNode.id"
+                class="work-week-card"
+                @click="viewWorkWeek(weekNode.data!)"
+              >
+                <div class="week-card-header">
+                  <div class="week-title">{{ weekNode.data!.title }}</div>
+                  <el-tag :type="getWeekStatusType(weekNode.data!.status)" size="small">
+                    {{ getWeekStatusText(weekNode.data!.status) }}
+                  </el-tag>
+                </div>
+                
+                <div class="week-card-content">
+                  <div class="week-info">
+                    <div class="week-dates">
+                      <el-icon><Calendar /></el-icon>
+                      {{ formatDateRange(weekNode.data!.week_start_date, weekNode.data!.week_end_date) }}
+                    </div>
+                    <div class="week-description" v-if="weekNode.data!.description">
+                      {{ weekNode.data!.description }}
+                    </div>
+                  </div>
+                  
+                  <div class="week-stats">
+                    <div class="stat-item">
+                      <span class="stat-label">完成率</span>
+                      <div class="stat-value">
+                        <el-progress 
+                          :percentage="weekNode.data!.completion_rate || 0" 
+                          :stroke-width="8"
+                          :show-text="false"
+                        />
+                        <span class="percentage-text">{{ (weekNode.data!.completion_rate || 0).toFixed(1) }}%</span>
+                      </div>
+                    </div>
+                    <div class="stat-item">
+                      <span class="stat-label">提交情况</span>
+                      <span class="stat-value">{{ weekNode.data!.submitted_entries || 0 }}/{{ weekNode.data!.total_entries || 0 }}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="week-card-actions">
+                  <el-button size="small" type="primary" @click.stop="viewWorkWeek(weekNode.data!)">
+                    <el-icon><View /></el-icon>
+                    查看详情
+                  </el-button>
+                  <el-button size="small" @click.stop="editWorkWeek(weekNode.data!)" v-if="canManageWorkLog">
+                    <el-icon><Edit /></el-icon>
+                    编辑
+                  </el-button>
+                  <el-button 
+                    size="small" 
+                    type="danger" 
+                    @click.stop="deleteWorkWeek(weekNode.data!)"
+                    v-if="canManageWorkLog"
+                  >
+                    <el-icon><Delete /></el-icon>
+                    删除
+                  </el-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 树形视图 -->
+      <div v-else>
+        <el-tree
+          ref="treeRef"
+          v-loading="loading"
+          :data="treeData"
+          :props="{ children: 'children', label: 'label' }"
+          node-key="id"
+          :expand-on-click-node="false"
+          :default-expand-all="false"
+          class="work-weeks-tree"
+        >
+          <template #default="{ node, data }">
+            <div class="tree-node" :class="`tree-node-${data.type}`">
+              <!-- 年份节点 -->
+              <div v-if="data.type === 'year'" class="year-node" @click="toggleNode(node)">
+                <el-icon><Calendar /></el-icon>
+                <span class="year-label">{{ data.label }}</span>
+                <el-tag size="small" type="info">{{ node.childNodes.length }}个月</el-tag>
+                <el-icon class="expand-icon" :class="{ 'is-expanded': node.expanded }">
+                  <ArrowRight />
+                </el-icon>
+              </div>
+              
+              <!-- 月份节点 -->
+              <div v-else-if="data.type === 'month'" class="month-node" @click="toggleNode(node)">
+                <el-icon><Clock /></el-icon>
+                <span class="month-label">{{ data.label }}</span>
+                <el-tag size="small" type="success">{{ node.childNodes.length }}周</el-tag>
+                <el-icon class="expand-icon" :class="{ 'is-expanded': node.expanded }">
+                  <ArrowRight />
+                </el-icon>
+              </div>
+              
+              <!-- 工作周节点 -->
+              <div v-else class="week-node" @click="viewWorkWeek(data.data!)">
+                <div class="week-info">
+                  <div class="week-title">
+                    <el-icon><Document /></el-icon>
+                    <span>{{ data.label }}</span>
+                    <el-tag :type="getWeekStatusType(data.data!.status)" size="small">
+                      {{ getWeekStatusText(data.data!.status) }}
+                    </el-tag>
+                  </div>
+                  <div class="week-details">
+                    <span class="week-date">
+                      {{ formatDateRange(data.data!.week_start_date, data.data!.week_end_date) }}
+                    </span>
+                    <span class="week-progress">
+                      完成率: {{ (data.data!.completion_rate || 0).toFixed(1) }}%
+                    </span>
+                    <span class="week-submission">
+                      提交: {{ data.data!.submitted_entries || 0 }}/{{ data.data!.total_entries || 0 }}
+                    </span>
+                  </div>
+                </div>
+                <div class="week-actions" v-if="canManageWorkLog" @click.stop>
+                  <el-button size="small" type="primary" @click="viewWorkWeek(data.data!)">
+                    查看
+                  </el-button>
+                  <el-button size="small" @click="editWorkWeek(data.data!)">
+                    编辑
+                  </el-button>
+                  <el-button size="small" type="danger" @click="deleteWorkWeek(data.data!)">
+                    删除
+                  </el-button>
+                </div>
+              </div>
+            </div>
+          </template>
+        </el-tree>
+      </div>
+    </el-card>
+
+    <!-- 创建/编辑工作周对话框 -->
+    <el-dialog
+      v-model="showCreateWeekDialog"
+      :title="editingWeek ? '编辑工作周' : '创建工作周'"
+      width="800px"
+      :close-on-click-modal="false"
+      class="work-week-dialog"
+      top="5vh"
+    >
+      <div class="dialog-content">
+        <!-- 模板配置区域 -->
+        <div class="form-section">
+          <div class="section-header">
+            <el-icon class="section-icon"><Calendar /></el-icon>
+            <div>
+              <h3>工作周模板配置</h3>
+              <p>选择年份、周序号和工作组，系统将自动生成标准化标题</p>
+            </div>
+          </div>
+          
+          <el-form
+            ref="weekFormRef"
+            :model="weekForm"
+            :rules="weekFormRules"
+            label-width="80px"
+            class="template-form"
+          >
+            <el-row :gutter="24">
+              <el-col :span="8">
+                <el-form-item label="年份" prop="year">
+                  <el-input-number
+                    v-model="weekForm.year"
+                    :min="2020"
+                    :max="2030"
+                    :step="1"
+                    @change="updateTitle"
+                    style="width: 100%"
+                    :controls-position="'right'"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="周序号" prop="weekNumber">
+                  <el-input-number
+                    v-model="weekForm.weekNumber"
+                    :min="1"
+                    :max="53"
+                    :step="1"
+                    @change="updateTitle"
+                    style="width: 100%"
+                    :controls-position="'right'"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="工作组" prop="workGroup">
+                  <el-select
+                    v-model="weekForm.workGroup"
+                    @change="updateTitle"
+                    style="width: 100%"
+                    placeholder="选择工作组"
+                  >
+                    <el-option
+                      v-for="option in workGroupOptions"
+                      :key="option.value"
+                      :label="option.label"
+                      :value="option.value"
+                    >
+                      <span style="float: left">{{ option.label }}</span>
+                      <span style="float: right; color: var(--el-text-color-secondary); font-size: 13px">
+                        {{ option.value }}
+                      </span>
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+
+        <!-- 标题预览区域 -->
+        <div class="form-section">
+          <div class="section-header">
+            <el-icon class="section-icon"><Document /></el-icon>
+            <div>
+              <h3>标题预览</h3>
+              <p>根据上述配置自动生成的工作周标题</p>
+            </div>
+          </div>
+          
+          <el-form ref="titleFormRef" :model="weekForm" :rules="weekFormRules" label-width="80px">
+            <el-form-item label="标题" prop="title">
+              <div class="title-preview-container">
+                <el-input 
+                  v-model="weekForm.title" 
+                  placeholder="将根据上述选项自动生成"
+                  maxlength="100"
+                  show-word-limit
+                  class="title-input"
+                >
+                  <template #prepend>
+                    <el-icon><Document /></el-icon>
+                  </template>
+                </el-input>
+                <el-button 
+                  @click="updateTitle" 
+                  :icon="Refresh" 
+                  type="primary" 
+                  class="refresh-btn"
+                >
+                  重新生成
+                </el-button>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+
+        <!-- 基本信息区域 -->
+        <div class="form-section">
+          <div class="section-header">
+            <el-icon class="section-icon"><Clock /></el-icon>
+            <div>
+              <h3>基本信息</h3>
+              <p>设置工作周的日期范围和描述信息</p>
+            </div>
+          </div>
+          
+          <el-form ref="basicFormRef" :model="weekForm" :rules="weekFormRules" label-width="80px">
+            <el-form-item label="日期范围" prop="dateRange">
+              <el-date-picker
+                v-model="weekForm.dateRange"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="周一"
+                end-placeholder="周五"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                :picker-options="datePickerOptions"
+                style="width: 100%;"
+                size="default"
+              />
+            </el-form-item>
+
+            <el-form-item label="创建周数" prop="weekCount">
+              <el-input-number
+                v-model="weekForm.weekCount"
+                :min="1"
+                :max="12"
+                :step="1"
+                style="width: 160px"
+                :controls-position="'right'"
+              />
+              <span style="margin-left:8px;color:#6b7280;font-size:13px;">从上方日期所在周开始，连续创建 N 周</span>
+            </el-form-item>
+            
+            <el-form-item label="覆盖员工" prop="coveredUserIds">
+              <div style="width:100%">
+                <div style="margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="color:#6b7280; font-size:13px;">按角色快速选择：</span>
+                  <el-check-tag
+                    v-for="role in roleOptions"
+                    :key="role.value"
+                    :checked="activeRoles.has(role.value)"
+                    @change="() => toggleRole(role.value)"
+                  >{{ role.label }}</el-check-tag>
+                  <el-button link type="primary" @click="selectAllUsers" style="margin-left:8px">全选</el-button>
+                  <el-button link @click="clearAllUsers">清空</el-button>
+                </div>
+                <el-select
+                  v-model="weekForm.coveredUserIds"
+                  multiple
+                  filterable
+                  placeholder="请选择需要填写本周日志的员工"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="u in userOptions"
+                    :key="u.value"
+                    :label="u.label"
+                    :value="u.value"
+                  />
+                </el-select>
+              </div>
+            </el-form-item>
+            
+            <el-form-item label="描述">
+              <el-input
+                v-model="weekForm.description"
+                type="textarea"
+                :rows="4"
+                placeholder="请输入工作周描述，例如：本周主要任务、重点关注事项等（可选）"
+                maxlength="500"
+                show-word-limit
+                resize="none"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+
+      <template #footer>
+        <el-button @click="showCreateWeekDialog = false">取消</el-button>
+        <el-button type="primary" @click="submitWeekForm" :loading="submitting">
+          {{ editingWeek ? '更新' : '创建' }}
+        </el-button>
+      </template>
+    </el-dialog>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { 
+  Plus, Refresh, Search, Calendar, View, Edit, Delete, 
+  Grid, List, Clock, Document, ArrowRight
+} from '@element-plus/icons-vue'
+import { useUserStore } from '@/store/modules/user'
+import { workWeekApi, workLogUtils } from '@/api/workLogApi'
+import { userApi } from '@/api/userApi'
+import type { WorkWeek, WorkWeekCreate, WorkWeekUpdate, WorkWeekQueryParams } from '@/types/work-log'
+
+const router = useRouter()
+const userStore = useUserStore()
+
+// 响应式数据
+const loading = ref(false)
+const submitting = ref(false)
+const viewMode = ref<'card' | 'table'>('card')
+const showCreateWeekDialog = ref(false)
+const workWeeks = ref<WorkWeek[]>([])
+const editingWeek = ref<WorkWeek | null>(null)
+const treeRef = ref()
+
+// 卡片视图的展开状态管理
+const expandedYears = ref<Set<string>>(new Set())
+const expandedMonths = ref<Set<string>>(new Set())
+
+// 树形数据结构
+interface TreeNode {
+  id: string
+  label: string
+  type: 'year' | 'month' | 'week'
+  children?: TreeNode[]
+  data?: WorkWeek
+}
+
+// 将工作周数据转换为树形结构
+const treeData = computed(() => {
+  const tree: TreeNode[] = []
+  const yearMap = new Map<string, TreeNode>()
+  const monthMap = new Map<string, TreeNode>()
+
+  workWeeks.value.forEach(week => {
+    const startDate = new Date(week.week_start_date)
+    const year = startDate.getFullYear().toString()
+    const month = `${year}-${(startDate.getMonth() + 1).toString().padStart(2, '0')}`
+    const monthLabel = `${startDate.getFullYear()}年${startDate.getMonth() + 1}月`
+
+    // 创建年份节点
+    if (!yearMap.has(year)) {
+      const yearNode: TreeNode = {
+        id: `year-${year}`,
+        label: `${year}年`,
+        type: 'year',
+        children: []
+      }
+      yearMap.set(year, yearNode)
+      tree.push(yearNode)
+    }
+
+    // 创建月份节点
+    if (!monthMap.has(month)) {
+      const monthNode: TreeNode = {
+        id: `month-${month}`,
+        label: monthLabel,
+        type: 'month',
+        children: []
+      }
+      monthMap.set(month, monthNode)
+      yearMap.get(year)!.children!.push(monthNode)
+    }
+
+    // 创建工作周节点
+    const weekNode: TreeNode = {
+      id: week.id,
+      label: week.title,
+      type: 'week',
+      data: week
+    }
+    monthMap.get(month)!.children!.push(weekNode)
+  })
+
+  return tree
+})
+
+// 搜索表单
+const searchForm = reactive({
+  status: '',
+  dateRange: [] as string[]
+})
+
+// 分页
+const pagination = reactive({
+  page: 1,
+  pageSize: 20,
+  total: 0
+})
+
+// 工作周表单
+const weekForm = reactive({
+  // 模板化字段
+  year: new Date().getFullYear(),
+  weekNumber: 1,
+  workGroup: '标注组',
+  // 原有字段
+  title: '',
+  dateRange: [] as string[],
+  description: '',
+  coveredUserIds: [] as string[],
+  weekCount: 1
+})
+const userOptions = ref<Array<{ label: string; value: string }>>([])
+const userIdByRole = ref<Record<string, string[]>>({})
+const roleOptions = [
+  { label: '标注员', value: 'annotator' },
+  { label: '算法工程师', value: 'reviewer' },
+  { label: '管理员', value: 'admin' }
+]
+const activeRoles = ref<Set<string>>(new Set())
+
+
+// 工作组选项
+const workGroupOptions = [
+  { label: '标注组', value: '标注组' },
+  { label: '算法组', value: '算法组' }
+]
+
+// 自动生成标题
+const generateTitle = () => {
+  const weekStr = weekForm.weekNumber.toString().padStart(2, '0')
+  return `${weekForm.year}W${weekStr}${weekForm.workGroup}工作计划`
+}
+
+// 监听模板字段变化，自动更新标题
+const updateTitle = () => {
+  if (!editingWeek.value) { // 只在创建时自动生成标题
+    // 若已初始化日期，则使用 ISO 周算法生成更精准的标题
+    if (weekForm.dateRange && weekForm.dateRange.length === 2) {
+      const monday = new Date(weekForm.dateRange[0])
+      weekForm.title = generateWeekTitleFromDate(monday, weekForm.workGroup)
+    } else {
+      weekForm.title = generateTitle()
+    }
+  }
+}
+
+const weekFormRef = ref()
+const titleFormRef = ref()
+const basicFormRef = ref()
+
+// 表单验证规则
+const weekFormRules: any = {
+  title: [
+    { required: true, message: '请输入工作周标题', trigger: 'blur' },
+    { min: 2, max: 100, message: '标题长度在 2 到 100 个字符', trigger: 'blur' }
+  ],
+  dateRange: [
+    { required: true, message: '请选择日期范围', trigger: 'change' },
+    { 
+      validator: (rule: any, value: string[], callback: Function) => {
+        if (!value || value.length !== 2) {
+          callback(new Error('请选择完整的日期范围'))
+          return
+        }
+        const validation = workLogUtils.validateWorkWeekDates(value[0], value[1])
+        if (!validation.isValid) {
+          callback(new Error(validation.error || '日期范围不正确'))
+          return
+        }
+        callback()
+      }, 
+      trigger: 'change' 
+    }
+  ],
+  coveredUserIds: [
+    { 
+      validator: (_: any, val: any[], cb: Function) => {
+        if (!Array.isArray(val) || val.length === 0) return cb(new Error('请选择覆盖员工'))
+        cb()
+      },
+      trigger: 'change'
+    }
+  ],
+  weekCount: [
+    {
+      validator: (_: any, val: any, cb: Function) => {
+        const n = Number(val)
+        if (!Number.isInteger(n) || n < 1 || n > 12) return cb(new Error('创建周数应为 1-12 的整数'))
+        cb()
+      },
+      trigger: 'change'
+    }
+  ]
+}
+
+// 日期选择器配置
+const datePickerOptions = {
+  disabledDate: (time: Date) => {
+    // 只允许选择周一和周五
+    const day = time.getDay()
+    return day !== 1 && day !== 5
+  }
+}
+
+// 计算属性
+const canManageWorkLog = computed(() => {
+  return userStore.hasPermission('WorkLogEdit')
+})
+
+// 切换树形节点展开/收起
+const toggleNode = (node: any) => {
+  if (node.childNodes && node.childNodes.length > 0) {
+    if (node.expanded) {
+      treeRef.value.store.nodesMap[node.key].collapse()
+    } else {
+      treeRef.value.store.nodesMap[node.key].expand()
+    }
+  }
+}
+
+// 切换卡片视图年份展开状态
+const toggleYear = (yearId: string) => {
+  if (expandedYears.value.has(yearId)) {
+    expandedYears.value.delete(yearId)
+    // 同时收起该年份下的所有月份
+    treeData.value.forEach(year => {
+      if (year.id === yearId && year.children) {
+        year.children.forEach(month => {
+          expandedMonths.value.delete(month.id)
+        })
+      }
+    })
+  } else {
+    expandedYears.value.add(yearId)
+  }
+}
+
+// 切换卡片视图月份展开状态
+const toggleMonth = (monthId: string) => {
+  if (expandedMonths.value.has(monthId)) {
+    expandedMonths.value.delete(monthId)
+  } else {
+    expandedMonths.value.add(monthId)
+  }
+}
+
+// 方法
+const fetchWorkWeeks = async () => {
+  console.log('🔄 [WorkLog] 开始获取工作周列表')
+  loading.value = true
+  try {
+    const params: WorkWeekQueryParams = {
+      page: pagination.page,
+      pageSize: pagination.pageSize
+    }
+    
+    if (searchForm.status) {
+      params.status = searchForm.status as any
+    }
+    
+    if (searchForm.dateRange && searchForm.dateRange.length === 2) {
+      params.dateStart = searchForm.dateRange[0]
+      params.dateEnd = searchForm.dateRange[1]
+    }
+    
+    console.log('📡 [WorkLog] 发送API请求，参数:', params)
+    const response = await workWeekApi.getWorkWeeks(params)
+    console.log('✅ [WorkLog] API响应成功:', response)
+    
+    // HTTP工具类已经提取了data字段，直接使用 {list: [...], total: 5} 格式
+    console.log('🔍 [WorkLog] 检查响应:', {
+      hasResponse: !!response,
+      hasList: !!(response as any)?.list,
+      listType: typeof (response as any)?.list,
+      listLength: (response as any)?.list?.length
+    })
+    
+    if (response && Array.isArray((response as any).list)) {
+      console.log('📦 [WorkLog] 解析响应数据，工作周数量:', (response as any).list.length)
+      workWeeks.value = (response as any).list || []
+      pagination.total = (response as any).total || 0
+      console.log('📋 [WorkLog] 设置工作周列表:', workWeeks.value.length, '个工作周，总数:', pagination.total)
+    } else {
+      console.warn('⚠️ [WorkLog] 响应格式异常，response:', response)
+      workWeeks.value = []
+      pagination.total = 0
+    }
+  } catch (error) {
+    console.error('❌ [WorkLog] 获取工作周列表失败:', error)
+    ElMessage.error('获取工作周列表失败')
+  } finally {
+    console.log('🏁 [WorkLog] 请求完成，loading状态:', loading.value)
+    loading.value = false
+  }
+}
+
+const handleSearch = () => {
+  pagination.page = 1
+  fetchWorkWeeks()
+}
+
+const resetSearch = () => {
+  searchForm.status = ''
+  searchForm.dateRange = []
+  pagination.page = 1
+  fetchWorkWeeks()
+}
+
+const refreshData = () => {
+  fetchWorkWeeks()
+}
+
+const handlePageChange = (page: number) => {
+  pagination.page = page
+  fetchWorkWeeks()
+}
+
+const handlePageSizeChange = (size: number) => {
+  pagination.pageSize = size
+  pagination.page = 1
+  fetchWorkWeeks()
+}
+
+// 工作周操作
+const viewWorkWeek = (week: WorkWeek) => {
+  const targetId = week.id
+  if (!targetId) return
+  // 直接用路径跳转，规避命名路由丢参问题
+  const tryPaths = [`/work-log/week-detail/${targetId}`, `/project/work-log/${targetId}`]
+  router.push(tryPaths[0]).catch(() => router.push(tryPaths[1]))
+}
+
+const createWorkWeek = () => {
+  editingWeek.value = null
+  
+  // 重置表单为默认值
+  weekForm.year = new Date().getFullYear()
+  weekForm.weekNumber = getCurrentWeekNumber()
+  weekForm.workGroup = '标注组'
+  weekForm.title = ''
+  // 自动初始化为“已有最新工作周”的下一周范围
+  initNextWeekRange()
+  weekForm.description = ''
+  weekForm.coveredUserIds = []
+  
+  // 生成初始标题
+  updateTitle()
+  
+  showCreateWeekDialog.value = true
+  // 加载员工选项
+  fetchActiveUsers()
+}
+
+const editWorkWeek = (week: WorkWeek) => {
+  editingWeek.value = week
+  
+  // 解析现有标题获取模板字段（如果可能）
+  const titleMatch = week.title.match(/(\d{4})W(\d{2})(.+?)工作计划/)
+  if (titleMatch) {
+    weekForm.year = parseInt(titleMatch[1])
+    weekForm.weekNumber = parseInt(titleMatch[2])
+    weekForm.workGroup = titleMatch[3]
+  } else {
+    weekForm.year = new Date().getFullYear()
+    weekForm.weekNumber = 1
+    weekForm.workGroup = '标注组'
+  }
+  
+  weekForm.title = week.title
+  weekForm.dateRange = [week.week_start_date, week.week_end_date]
+  weekForm.description = week.description || ''
+  // 尝试回填覆盖员工
+  const cfg: any = (week as any).config || {}
+  weekForm.coveredUserIds = Array.isArray(cfg.covered_user_ids) ? cfg.covered_user_ids : []
+  showCreateWeekDialog.value = true
+  fetchActiveUsers()
+}
+
+// 获取当前周数
+const getCurrentWeekNumber = (): number => {
+  const now = new Date()
+  const start = new Date(now.getFullYear(), 0, 1)
+  const diff = now.getTime() - start.getTime()
+  const oneWeek = 1000 * 60 * 60 * 24 * 7
+  return Math.ceil(diff / oneWeek)
+}
+
+// 自动设置下一周的 [周一, 周五]
+const initNextWeekRange = () => {
+  // 如果列表已有数据，取第一个（最新）工作周，推一周；否则以当前周推一周
+  const latest = workWeeks.value && workWeeks.value.length > 0 ? workWeeks.value[0] : null
+  let baseMonday: Date
+  if (latest) {
+    const lastEnd = new Date(latest.week_end_date)
+    baseMonday = new Date(lastEnd)
+    baseMonday.setDate(lastEnd.getDate() + 3) // 周五后 +3 天 = 下周一
+  } else {
+    const today = new Date()
+    const day = today.getDay()
+    const diff = today.getDate() - day + (day === 0 ? -6 : 1)
+    baseMonday = new Date(today.setDate(diff))
+    baseMonday.setDate(baseMonday.getDate() + 7) // 下一周
+  }
+  const friday = new Date(baseMonday)
+  friday.setDate(baseMonday.getDate() + 4)
+  weekForm.dateRange = [baseMonday.toISOString().split('T')[0], friday.toISOString().split('T')[0]]
+}
+
+const deleteWorkWeek = async (week: WorkWeek) => {
+  try {
+    await ElMessageBox.confirm(
+      `确定要删除工作周 "${week.title}" 吗？\n\n⚠️ 注意：此操作将会：\n• 彻底删除该工作周\n• 同时删除该工作周下的所有工作项\n• 此操作不可恢复`,
+      '确认删除',
+      {
+        confirmButtonText: '确定删除',
+        cancelButtonText: '取消',
+        type: 'warning',
+        confirmButtonClass: 'el-button--danger',
+        dangerouslyUseHTMLString: false
+      }
+    )
+    
+    console.log('🗑️ [WorkLogManagement] 开始删除工作周:', week.title)
+    
+    const response = await workWeekApi.deleteWorkWeek(week.id)
+    
+    // 检查响应格式并显示相应的成功消息
+    if (response && typeof response === 'object' && 'data' in response) {
+      const responseData = (response as any).data
+      const deletedCount = responseData?.deleted_entries_count || 0
+      if (deletedCount > 0) {
+        ElMessage.success(`删除成功！已删除工作周及 ${deletedCount} 个相关工作项`)
+      } else {
+        ElMessage.success('删除成功！工作周已删除')
+      }
+    } else {
+      ElMessage.success('删除成功')
+    }
+    
+    console.log('✅ [WorkLogManagement] 工作周删除成功')
+    
+    // 刷新工作周列表
+    await fetchWorkWeeks()
+  } catch (error: any) {
+    if (error !== 'cancel') {
+      console.error('❌ [WorkLogManagement] 删除工作周失败:', error)
+      ElMessage.error('删除失败，请稍后重试')
+    }
+  }
+}
+
+const addDays = (dateStr: string, days: number): string => {
+  const d = new Date(dateStr)
+  d.setDate(d.getDate() + days)
+  return d.toISOString().split('T')[0]
+}
+
+const getISOWeek = (d: Date): number => {
+  const target = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
+  const dayNum = target.getUTCDay() || 7
+  target.setUTCDate(target.getUTCDate() + 4 - dayNum)
+  const yearStart = new Date(Date.UTC(target.getUTCFullYear(), 0, 1))
+  return Math.ceil((((target.getTime() - yearStart.getTime()) / 86400000) + 1) / 7)
+}
+
+const generateWeekTitleFromDate = (monday: Date, group: string) => {
+  const year = monday.getFullYear()
+  const weekNo = getISOWeek(monday)
+  const weekStr = String(weekNo).padStart(2, '0')
+  return `${year}W${weekStr}${group}工作计划`
+}
+
+const submitWeekForm = async () => {
+  try {
+    await weekFormRef.value.validate()
+    await titleFormRef.value.validate()
+    await basicFormRef.value.validate()
+
+    submitting.value = true
+
+    const monday0 = weekForm.dateRange[0]
+    const friday0 = weekForm.dateRange[1]
+    const count = Math.max(1, Math.min(12, Number(weekForm.weekCount || 1)))
+
+    if (!editingWeek.value && count > 1) {
+      for (let i = 0; i < count; i++) {
+        const monday = addDays(monday0, i * 7)
+        const friday = addDays(friday0, i * 7)
+        const title = generateWeekTitleFromDate(new Date(monday), weekForm.workGroup)
+        const data: WorkWeekCreate = {
+          title,
+          week_start_date: monday,
+          week_end_date: friday,
+          description: weekForm.description || undefined,
+          config: { covered_user_ids: weekForm.coveredUserIds }
+        } as any
+        await workWeekApi.createWorkWeek(data)
+      }
+      ElMessage.success(`已创建 ${count} 个工作周`)
+    } else {
+      const data: WorkWeekCreate | WorkWeekUpdate = {
+        title: weekForm.title,
+        week_start_date: monday0,
+        week_end_date: friday0,
+        description: weekForm.description || undefined,
+        config: { covered_user_ids: weekForm.coveredUserIds }
+      }
+      if (editingWeek.value) {
+        await workWeekApi.updateWorkWeek(editingWeek.value.id, data as WorkWeekUpdate)
+        ElMessage.success('更新成功')
+      } else {
+        await workWeekApi.createWorkWeek(data as WorkWeekCreate)
+        ElMessage.success('创建成功')
+      }
+    }
+
+    showCreateWeekDialog.value = false
+    resetWeekForm()
+    fetchWorkWeeks()
+  } catch (error) {
+    console.error('提交失败:', error)
+    ElMessage.error(editingWeek.value ? '更新失败' : '创建失败')
+  } finally {
+    submitting.value = false
+  }
+}
+
+const resetWeekForm = () => {
+  weekForm.title = ''
+  weekForm.dateRange = []
+  weekForm.description = ''
+  weekForm.coveredUserIds = []
+  editingWeek.value = null
+  weekFormRef.value?.resetFields()
+}
+
+// 工具函数
+const getWeekStatusText = (status: string) => {
+  const statusMap = {
+    'active': '活跃',
+    'archived': '已归档',
+    'deleted': '已删除'
+  }
+  return statusMap[status as keyof typeof statusMap] || status
+}
+
+const getWeekStatusType = (status: string): 'success' | 'info' | 'warning' | 'danger' => {
+  const typeMap = {
+    'active': 'success' as const,
+    'archived': 'info' as const,
+    'deleted': 'danger' as const
+  }
+  return typeMap[status as keyof typeof typeMap] || 'info'
+}
+
+const formatDateRange = (startDate: string, endDate: string) => {
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+  return `${start.getMonth() + 1}/${start.getDate()} - ${end.getMonth() + 1}/${end.getDate()}`
+}
+
+const formatDateTime = (dateTime: string) => {
+  return new Date(dateTime).toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+// 加载活跃员工简表
+const fetchActiveUsers = async () => {
+  try {
+    const res: any = await userApi.getUsers({ status: 'active', size: 9999 })
+    const list: any[] = res?.list || res?.data?.list || res?.data || []
+    userOptions.value = list.map((u: any) => ({
+      label: u.real_name || u.username,
+      value: u.id
+    }))
+    // 按角色映射用户ID集合
+    const roleMap: Record<string, string[]> = {}
+    list.forEach((u: any) => {
+      const role = (u.role || '').toLowerCase()
+      if (!roleMap[role]) roleMap[role] = []
+      roleMap[role].push(u.id)
+    })
+    userIdByRole.value = roleMap
+  } catch (e) {
+    userOptions.value = []
+  }
+}
+
+const toggleRole = (role: string) => {
+  const set = activeRoles.value
+  if (set.has(role)) {
+    set.delete(role)
+  } else {
+    set.add(role)
+  }
+  // 根据选中角色合并用户
+  const ids: string[] = []
+  set.forEach(r => {
+    const arr = userIdByRole.value[r]
+    if (arr) ids.push(...arr)
+  })
+  // 去重合并
+  const merged = Array.from(new Set([...(weekForm.coveredUserIds || []), ...ids]))
+  weekForm.coveredUserIds = merged
+}
+
+const selectAllUsers = () => {
+  weekForm.coveredUserIds = userOptions.value.map(u => u.value)
+}
+
+const clearAllUsers = () => {
+  weekForm.coveredUserIds = []
+  activeRoles.value = new Set()
+}
+
+// 生命周期
+onMounted(() => {
+  console.log('🚀 [WorkLog] 组件已挂载，开始初始化')
+  fetchWorkWeeks()
+})
+</script>
+
+<style lang="scss" scoped>
+.work-log-management {
+  .header-card {
+    margin-bottom: 20px;
+    
+    .page-header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      .header-left {
+        h2 {
+          margin: 0 0 8px 0;
+          color: #1f2937;
+          font-size: 24px;
+          font-weight: 600;
+        }
+        
+        p {
+          margin: 0;
+          color: #6b7280;
+          font-size: 14px;
+        }
+      }
+      
+      .header-right {
+        display: flex;
+        gap: 12px;
+      }
+    }
+  }
+  
+  .filter-card {
+    margin-bottom: 20px;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+  }
+  
+  // 树形视图样式
+  .work-weeks-tree {
+    // 增加树形组件的整体样式
+    :deep(.el-tree-node__content) {
+      height: auto !important;
+      min-height: 40px;
+      padding: 4px 0;
+    }
+    
+    :deep(.el-tree-node__expand-icon) {
+      padding: 8px;
+      font-size: 14px;
+    }
+    
+    .tree-node {
+      width: 100%;
+      min-width: 0;
+      
+      &.tree-node-year {
+        .year-node {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 16px 20px;
+          background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+          border-radius: 8px;
+          font-weight: 700;
+          color: #1e293b;
+          margin: 8px 0;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+          cursor: pointer;
+          transition: all 0.2s ease;
+          
+          &:hover {
+            background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          }
+          
+          .year-label {
+            font-size: 18px;
+            flex: 1;
+          }
+          
+          .el-tag {
+            font-weight: 500;
+          }
+          
+          .expand-icon {
+            margin-left: auto;
+            transition: transform 0.2s ease;
+            
+            &.is-expanded {
+              transform: rotate(90deg);
+            }
+          }
+        }
+      }
+      
+      &.tree-node-month {
+        .month-node {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 18px;
+          background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
+          border-radius: 6px;
+          font-weight: 600;
+          color: #0369a1;
+          margin: 6px 0;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+          cursor: pointer;
+          transition: all 0.2s ease;
+          
+          &:hover {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+          }
+          
+          .month-label {
+            font-size: 16px;
+            flex: 1;
+          }
+          
+          .el-tag {
+            font-weight: 500;
+          }
+          
+          .expand-icon {
+            margin-left: auto;
+            transition: transform 0.2s ease;
+            
+            &.is-expanded {
+              transform: rotate(90deg);
+            }
+          }
+        }
+      }
+      
+      &.tree-node-week {
+        .week-node {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 16px 20px;
+          margin: 6px 0;
+          background: #fff;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          min-height: 80px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+          
+          &:hover {
+            background: #f8fafc;
+            border-color: #409eff;
+            box-shadow: 0 4px 12px rgba(64, 158, 255, 0.15);
+            transform: translateY(-1px);
+          }
+          
+          .week-info {
+            flex: 1;
+            min-width: 0;
+            
+            .week-title {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              margin-bottom: 8px;
+              font-weight: 600;
+              color: #374151;
+              font-size: 16px;
+              
+              .el-icon {
+                font-size: 16px;
+                color: #6b7280;
+              }
+              
+              span {
+                flex: 1;
+                min-width: 0;
+                word-break: break-word;
+              }
+              
+              .el-tag {
+                flex-shrink: 0;
+                margin-left: 8px;
+              }
+            }
+            
+            .week-details {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 20px;
+              font-size: 14px;
+              color: #6b7280;
+              
+              span {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                white-space: nowrap;
+              }
+              
+              .week-date {
+                color: #374151;
+                font-weight: 500;
+              }
+              
+              .week-progress {
+                color: #059669;
+                font-weight: 500;
+              }
+              
+              .week-submission {
+                color: #dc2626;
+                font-weight: 500;
+              }
+            }
+          }
+          
+          .week-actions {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            flex-shrink: 0;
+            margin-left: 16px;
+            
+            .el-button {
+              padding: 6px 12px;
+              font-size: 12px;
+            }
+          }
+          
+          &:hover .week-actions {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+
+  // 卡片视图样式
+  .work-weeks-cards {
+    .year-group {
+      margin-bottom: 32px;
+      
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border-radius: 8px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+          transform: translateY(-1px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .year-title {
+          font-size: 18px;
+          flex: 1;
+        }
+        
+        .el-tag {
+          font-weight: 500;
+        }
+        
+        .expand-icon {
+          margin-left: auto;
+          transition: transform 0.2s ease;
+          
+          &.is-expanded {
+            transform: rotate(90deg);
+          }
+        }
+      }
+      
+      .month-group {
+        margin-bottom: 24px;
+        
+        .month-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 18px;
+          background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
+          border-radius: 6px;
+          font-weight: 600;
+          color: #0369a1;
+          margin-bottom: 16px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+          cursor: pointer;
+          transition: all 0.2s ease;
+          
+          &:hover {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+          }
+          
+          .month-title {
+            font-size: 16px;
+            flex: 1;
+          }
+          
+          .el-tag {
+            font-weight: 500;
+          }
+          
+          .expand-icon {
+            margin-left: auto;
+            transition: transform 0.2s ease;
+            
+            &.is-expanded {
+              transform: rotate(90deg);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .work-weeks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 20px;
+    
+    .work-week-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+        border-color: #409eff;
+      }
+      
+      .week-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        
+        .week-title {
+          font-size: 18px;
+          font-weight: 600;
+          color: #1f2937;
+        }
+      }
+      
+      .week-card-content {
+        margin-bottom: 16px;
+        
+        .week-info {
+          margin-bottom: 16px;
+          
+          .week-dates {
+            display: flex;
+            align-items: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 8px;
+            
+            .el-icon {
+              margin-right: 6px;
+            }
+          }
+          
+          .week-description {
+            color: #9ca3af;
+            font-size: 13px;
+            line-height: 1.4;
+          }
+        }
+        
+        .week-stats {
+          .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            
+            .stat-label {
+              font-size: 13px;
+              color: #6b7280;
+            }
+            
+            .stat-value {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              font-weight: 500;
+              
+              .el-progress {
+                width: 80px;
+              }
+              
+              .percentage-text {
+                font-size: 12px;
+                color: #374151;
+                min-width: 40px;
+              }
+            }
+          }
+        }
+      }
+      
+      .week-card-actions {
+        display: flex;
+        gap: 8px;
+        border-top: 1px solid #f3f4f6;
+        padding-top: 16px;
+      }
+    }
+  }
+  
+  // 表格视图样式
+  .completion-rate {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    .el-progress {
+      flex: 1;
+      min-width: 60px;
+    }
+    
+    .rate-text {
+      font-size: 12px;
+      color: #374151;
+      min-width: 35px;
+    }
+  }
+  
+  .pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+}
+
+// 工作周创建对话框样式
+.work-week-dialog {
+  :deep(.el-dialog) {
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    .el-dialog__header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px 24px;
+      border-radius: 12px 12px 0 0;
+      
+      .el-dialog__title {
+        font-size: 18px;
+        font-weight: 600;
+      }
+      
+      .el-dialog__headerbtn {
+        .el-dialog__close {
+          color: white;
+          font-size: 18px;
+          
+          &:hover {
+            color: #f3f4f6;
+          }
+        }
+      }
+    }
+    
+    .el-dialog__body {
+      padding: 0;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    
+    .el-dialog__footer {
+      padding: 20px 24px;
+      background: #f9fafb;
+      border-radius: 0 0 12px 12px;
+      border-top: 1px solid #e5e7eb;
+      
+      .el-button {
+        padding: 10px 20px;
+        font-weight: 500;
+        
+        &.el-button--primary {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border: none;
+          
+          &:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+          }
+        }
+      }
+    }
+  }
+}
+
+.dialog-content {
+  padding: 0;
+  
+  .form-section {
+    padding: 24px;
+    border-bottom: 1px solid #f3f4f6;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 20px;
+      
+      .section-icon {
+        color: #667eea;
+        font-size: 20px;
+        margin-top: 2px;
+        flex-shrink: 0;
+      }
+      
+      div {
+        flex: 1;
+        
+        h3 {
+          margin: 0 0 4px 0;
+          font-size: 16px;
+          font-weight: 600;
+          color: #1f2937;
+        }
+        
+        p {
+          margin: 0;
+          font-size: 14px;
+          color: #6b7280;
+          line-height: 1.4;
+        }
+      }
+    }
+    
+    .template-form {
+      .el-form-item {
+        margin-bottom: 20px;
+        
+        .el-form-item__label {
+          font-weight: 500;
+          color: #374151;
+        }
+        
+        .el-input-number {
+          .el-input__inner {
+            text-align: center;
+          }
+        }
+        
+        .el-select {
+          .el-input__inner {
+            border-radius: 6px;
+          }
+        }
+      }
+    }
+    
+    .title-preview-container {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      
+      .title-input {
+        flex: 1;
+        
+        .el-input-group__prepend {
+          background: #f3f4f6;
+          border-color: #d1d5db;
+          color: #6b7280;
+        }
+        
+        .el-input__inner {
+          font-weight: 500;
+          color: #1f2937;
+        }
+      }
+      
+      .refresh-btn {
+        flex-shrink: 0;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border: none;
+        
+        &:hover {
+          background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+      }
+    }
+    
+    .el-form-item {
+      margin-bottom: 20px;
+      
+      .el-form-item__label {
+        font-weight: 500;
+        color: #374151;
+      }
+      
+      .el-input__inner,
+      .el-textarea__inner {
+        border-radius: 6px;
+        border-color: #d1d5db;
+        
+        &:focus {
+          border-color: #667eea;
+          box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+      }
+      
+      .el-date-editor {
+        .el-input__inner {
+          border-radius: 6px;
+        }
+      }
+    }
+  }
+}
+
+// 对话框样式调整
+:deep(.el-dialog) {
+  .el-form-item__label {
+    font-weight: 500;
+    color: #374151;
+  }
+}
+</style>

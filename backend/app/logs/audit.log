@@ -1,0 +1,305 @@
+2025-08-29 09:24:10,547 | INFO | user_id=user1 action=claim_task task_id=task5
+2025-08-29 09:24:35,228 | INFO | user_id=user1 action=submit_task task_id=task5
+2025-08-29 09:24:46,333 | INFO | user_id=user1 action=review_task task_id=task5 result=approved
+2025-08-29 09:26:54,589 | INFO | user_id=user1 action=review_task task_id=task13 result=rejected
+2025-08-29 09:27:20,578 | INFO | user_id=user1 action=claim_task task_id=task6
+2025-08-29 09:27:54,002 | INFO | user_id=user1 action=submit_task task_id=task6
+2025-08-29 09:28:16,824 | INFO | user_id=user1 action=review_task task_id=task6 result=rejected
+2025-08-29 09:29:19,428 | INFO | user_id=user1 action=submit_task task_id=task6
+2025-08-29 09:33:39,158 | INFO | user_id=user1 action=claim_task task_id=task7
+2025-08-29 09:34:04,177 | INFO | user_id=user1 action=submit_task task_id=task7
+2025-08-29 09:34:37,597 | INFO | user_id=user1 action=review_task task_id=task7 result=rejected
+2025-08-29 09:35:06,197 | INFO | user_id=user1 action=submit_task task_id=task7
+2025-08-29 09:35:34,104 | INFO | user_id=user1 action=review_task task_id=task7 result=approved
+2025-08-29 10:13:04,828 | INFO | user_id=user2 action=claim_task task_id=task8
+2025-08-29 10:13:24,634 | INFO | user_id=user2 action=submit_task task_id=task8
+2025-09-02 17:07:17,141 | INFO | user_id=user2 action=claim_task task_id=16146129-de9a-4f16-a0a0-76f774183ea8
+2025-09-02 17:08:09,313 | INFO | user_id=user2 action=submit_task task_id=16146129-de9a-4f16-a0a0-76f774183ea8
+2025-09-02 17:08:51,171 | INFO | user_id=user1 action=review_task task_id=16146129-de9a-4f16-a0a0-76f774183ea8 result=rejected
+2025-09-02 17:09:43,725 | INFO | user_id=user2 action=submit_task task_id=16146129-de9a-4f16-a0a0-76f774183ea8
+2025-09-02 17:10:11,687 | INFO | user_id=user1 action=review_task task_id=16146129-de9a-4f16-a0a0-76f774183ea8 result=approved
+2025-09-03 09:11:43,295 | INFO | user_id=user5 action=claim_task task_id=20df8ff4-eab4-4f44-bbc5-69ff992ebe0a
+2025-09-03 11:58:48,149 | INFO | user_id=user5 action=claim_task task_id=24c243c6-7bca-4e28-80b8-f855ddc7e09d
+2025-09-03 11:59:03,829 | INFO | user_id=user5 action=submit_task task_id=20df8ff4-eab4-4f44-bbc5-69ff992ebe0a
+2025-09-03 11:59:45,871 | INFO | user_id=user1 action=review_task task_id=20df8ff4-eab4-4f44-bbc5-69ff992ebe0a result=approved
+2025-09-03 12:01:16,053 | INFO | user_id=user5 action=submit_task task_id=24c243c6-7bca-4e28-80b8-f855ddc7e09d
+2025-09-03 13:01:10,586 | INFO | user_id=user1 action=review_task task_id=24c243c6-7bca-4e28-80b8-f855ddc7e09d result=rejected
+2025-09-03 13:53:10,751 | INFO | user_id=user5 action=claim_task task_id=157cb789-fd87-48b0-a02c-d1cb02476169
+2025-09-03 13:53:34,396 | INFO | user_id=user5 action=submit_task task_id=157cb789-fd87-48b0-a02c-d1cb02476169
+2025-09-03 13:54:33,349 | INFO | user_id=user1 action=review_task task_id=157cb789-fd87-48b0-a02c-d1cb02476169 result=rejected
+2025-09-03 15:59:09,295 | INFO | user_id=user5 action=submit_task task_id=157cb789-fd87-48b0-a02c-d1cb02476169
+2025-09-03 15:59:24,506 | INFO | user_id=user5 action=submit_task task_id=24c243c6-7bca-4e28-80b8-f855ddc7e09d
+2025-09-03 15:59:38,860 | INFO | user_id=user1 action=review_task task_id=157cb789-fd87-48b0-a02c-d1cb02476169 result=approved
+2025-09-03 15:59:45,650 | INFO | user_id=user1 action=review_task task_id=24c243c6-7bca-4e28-80b8-f855ddc7e09d result=approved
+2025-09-04 10:14:02,079 | INFO | user_id=user6 action=claim_task task_id=35baef21-fd15-4b82-8552-6d2402488a07
+2025-09-04 10:14:25,526 | INFO | user_id=user6 action=submit_task task_id=35baef21-fd15-4b82-8552-6d2402488a07
+2025-09-04 10:14:43,689 | INFO | user_id=user6 action=review_task task_id=35baef21-fd15-4b82-8552-6d2402488a07 result=approved
+2025-09-04 10:15:17,889 | INFO | user_id=user6 action=claim_task task_id=e1df49f7-e103-472c-b1b0-0731de2a736d
+2025-09-04 10:15:20,937 | INFO | user_id=user6 action=claim_task task_id=d30b917d-b021-4a88-ad24-8ae692b64272
+2025-09-04 10:15:23,531 | INFO | user_id=user6 action=claim_task task_id=de35f565-a0c4-4b3f-bad5-a01a2ee780b0
+2025-09-04 10:15:34,021 | INFO | user_id=user6 action=submit_task task_id=de35f565-a0c4-4b3f-bad5-a01a2ee780b0
+2025-09-04 10:15:38,123 | INFO | user_id=user6 action=submit_task task_id=e1df49f7-e103-472c-b1b0-0731de2a736d
+2025-09-04 10:15:41,951 | INFO | user_id=user6 action=submit_task task_id=d30b917d-b021-4a88-ad24-8ae692b64272
+2025-09-04 10:15:56,514 | INFO | user_id=user6 action=review_task task_id=d30b917d-b021-4a88-ad24-8ae692b64272 result=approved
+2025-09-04 10:15:59,784 | INFO | user_id=user6 action=review_task task_id=de35f565-a0c4-4b3f-bad5-a01a2ee780b0 result=approved
+2025-09-04 10:16:03,411 | INFO | user_id=user6 action=review_task task_id=e1df49f7-e103-472c-b1b0-0731de2a736d result=approved
+2025-09-04 14:05:19,668 | INFO | user_id=user6 action=claim_task task_id=task17
+2025-09-04 14:05:22,099 | INFO | user_id=user6 action=claim_task task_id=task18
+2025-09-04 14:05:24,526 | INFO | user_id=user6 action=claim_task task_id=task19
+2025-09-04 14:05:46,922 | INFO | user_id=user6 action=submit_task task_id=task19
+2025-09-04 14:05:50,251 | INFO | user_id=user6 action=submit_task task_id=task17
+2025-09-04 14:05:54,351 | INFO | user_id=user6 action=submit_task task_id=task18
+2025-09-04 14:06:10,699 | INFO | user_id=user6 action=review_task task_id=task19 result=approved
+2025-09-04 14:06:14,989 | INFO | user_id=user6 action=review_task task_id=task17 result=approved
+2025-09-04 14:06:19,629 | INFO | user_id=user6 action=review_task task_id=task18 result=approved
+2025-09-04 14:06:37,224 | INFO | user_id=user6 action=claim_task task_id=task20
+2025-09-04 14:06:45,461 | INFO | user_id=user6 action=submit_task task_id=task20
+2025-09-04 14:06:56,621 | INFO | user_id=user6 action=review_task task_id=task20 result=approved
+2025-09-04 15:58:58,234 | INFO | user_id=user1 action=claim_task task_id=303e3b52-370c-4d52-87ec-1cf8633f8665
+2025-09-04 16:01:06,978 | INFO | user_id=user1 action=submit_task task_id=303e3b52-370c-4d52-87ec-1cf8633f8665
+2025-09-04 16:02:16,917 | INFO | user_id=user1 action=review_task task_id=303e3b52-370c-4d52-87ec-1cf8633f8665 result=rejected
+2025-09-05 14:37:55,433 | INFO | user_id=user6 action=claim_task task_id=be4fd47f-eabc-491d-a98a-dc3676ae225f
+2025-09-05 14:37:58,050 | INFO | user_id=user6 action=claim_task task_id=db910922-116d-4db3-94fd-0e4ec7e16d03
+2025-09-05 14:38:01,034 | INFO | user_id=user6 action=claim_task task_id=3b95072f-b399-4b0a-8592-11067495d965
+2025-09-05 14:38:56,924 | INFO | user_id=user6 action=submit_task task_id=be4fd47f-eabc-491d-a98a-dc3676ae225f
+2025-09-05 14:39:03,116 | INFO | user_id=user6 action=submit_task task_id=db910922-116d-4db3-94fd-0e4ec7e16d03
+2025-09-05 15:19:25,100 | INFO | user_id=user6 action=request_skip_task task_id=3b95072f-b399-4b0a-8592-11067495d965
+2025-09-05 16:19:44,027 | INFO | user_id=user6 action=review_skip_request task_id=3b95072f-b399-4b0a-8592-11067495d965 result=skipped
+2025-09-05 16:26:49,306 | INFO | user_id=user6 action=review_task task_id=be4fd47f-eabc-491d-a98a-dc3676ae225f result=approved
+2025-09-05 16:26:52,212 | INFO | user_id=user6 action=review_task task_id=db910922-116d-4db3-94fd-0e4ec7e16d03 result=approved
+2025-10-09 15:32:21,729 | INFO | user_id=user1 action=review_task task_id=task13 result=rejected
+2025-10-09 15:33:12,696 | INFO | user_id=user1 action=submit_task task_id=303e3b52-370c-4d52-87ec-1cf8633f8665
+2025-10-09 16:02:27,461 | INFO | user_id=user1 action=claim_task task_id=74afdca6-5b80-401e-acd2-5716a21a6663
+2025-10-09 16:03:06,017 | INFO | user_id=user1 action=submit_task task_id=74afdca6-5b80-401e-acd2-5716a21a6663
+2025-10-09 16:03:59,318 | INFO | user_id=user1 action=review_task task_id=74afdca6-5b80-401e-acd2-5716a21a6663 result=rejected
+2025-10-09 16:04:26,424 | INFO | user_id=user1 action=submit_task task_id=74afdca6-5b80-401e-acd2-5716a21a6663
+2025-10-09 16:19:20,223 | INFO | user_id=user1 action=claim_task task_id=d4b4b038-9bbb-4937-a2fb-31ebcf55e9ba
+2025-10-09 16:19:46,657 | INFO | user_id=user1 action=submit_task task_id=d4b4b038-9bbb-4937-a2fb-31ebcf55e9ba
+2025-10-09 16:24:21,473 | INFO | user_id=user1 action=claim_task task_id=90a4d30e-4d50-4543-adee-9932bca548d6
+2025-10-09 16:24:28,309 | INFO | user_id=user1 action=submit_task task_id=90a4d30e-4d50-4543-adee-9932bca548d6
+2025-10-09 16:25:06,955 | INFO | user_id=user1 action=review_task task_id=90a4d30e-4d50-4543-adee-9932bca548d6 result=rejected
+2025-10-09 16:31:01,689 | INFO | user_id=user1 action=submit_task task_id=90a4d30e-4d50-4543-adee-9932bca548d6
+2025-10-09 16:31:43,731 | INFO | user_id=user1 action=claim_task task_id=b16ed336-68e4-4045-9dff-cf44a734f77d
+2025-10-09 16:32:50,441 | INFO | user_id=user1 action=request_skip_task task_id=b16ed336-68e4-4045-9dff-cf44a734f77d
+2025-10-09 16:33:21,803 | INFO | user_id=user1 action=review_skip_request task_id=b16ed336-68e4-4045-9dff-cf44a734f77d result=in_progress
+2025-10-09 16:55:22,946 | INFO | user_id=user1 action=claim_task task_id=4644fae1-f896-4123-829b-cea7692bc664
+2025-10-09 17:00:57,266 | INFO | user_id=user1 action=request_skip_task task_id=4644fae1-f896-4123-829b-cea7692bc664
+2025-10-09 17:01:41,987 | INFO | user_id=user1 action=review_skip_request task_id=4644fae1-f896-4123-829b-cea7692bc664 result=skipped
+2025-10-09 17:17:02,970 | INFO | user_id=user1 action=review_task task_id=d4b4b038-9bbb-4937-a2fb-31ebcf55e9ba result=rejected
+2025-10-09 17:17:53,670 | INFO | user_id=user1 action=request_skip_task task_id=b16ed336-68e4-4045-9dff-cf44a734f77d
+2025-10-09 17:18:08,534 | INFO | user_id=user1 action=review_skip_request task_id=b16ed336-68e4-4045-9dff-cf44a734f77d result=skipped
+2025-10-09 17:24:32,819 | INFO | user_id=user1 action=review_task task_id=303e3b52-370c-4d52-87ec-1cf8633f8665 result=rejected
+2025-10-09 17:25:13,069 | INFO | user_id=user1 action=submit_task task_id=d4b4b038-9bbb-4937-a2fb-31ebcf55e9ba
+2025-10-09 17:26:00,293 | INFO | user_id=user1 action=claim_task task_id=abee54a1-08c4-481f-b767-43843b323f7d
+2025-10-09 17:26:12,890 | INFO | user_id=user1 action=submit_task task_id=abee54a1-08c4-481f-b767-43843b323f7d
+2025-10-09 17:27:01,258 | INFO | user_id=user1 action=claim_task task_id=d392e9d3-cc8c-4e26-bdc7-a8e1585e95b5
+2025-10-09 17:27:11,790 | INFO | user_id=user1 action=submit_task task_id=d392e9d3-cc8c-4e26-bdc7-a8e1585e95b5
+2025-10-09 17:29:44,236 | INFO | user_id=user1 action=claim_task task_id=18dd2643-7259-4215-8f59-574c709f0dc3
+2025-10-09 17:30:01,385 | INFO | user_id=user1 action=submit_task task_id=18dd2643-7259-4215-8f59-574c709f0dc3
+2025-10-09 17:31:23,193 | INFO | user_id=user1 action=claim_task task_id=04e2933d-acdd-4496-bf9b-a25d51a8132e
+2025-10-09 17:31:52,802 | INFO | user_id=user1 action=submit_task task_id=04e2933d-acdd-4496-bf9b-a25d51a8132e
+2025-10-09 17:34:08,346 | INFO | user_id=user1 action=claim_task task_id=ca6fa579-ac81-4674-9ee7-06f5c0170368
+2025-10-09 17:34:15,358 | INFO | user_id=user1 action=submit_task task_id=ca6fa579-ac81-4674-9ee7-06f5c0170368
+2025-10-09 17:35:09,616 | INFO | user_id=user1 action=claim_task task_id=4f399004-28f0-4ccc-92c6-94de9f92df8b
+2025-10-09 17:35:28,358 | INFO | user_id=user1 action=submit_task task_id=4f399004-28f0-4ccc-92c6-94de9f92df8b
+2025-10-09 17:38:12,261 | INFO | user_id=user1 action=claim_task task_id=7805b7a8-b11c-46aa-8459-1ceee93977cf
+2025-10-09 17:38:29,411 | INFO | user_id=user1 action=submit_task task_id=7805b7a8-b11c-46aa-8459-1ceee93977cf
+2025-10-09 17:40:37,088 | INFO | user_id=user1 action=claim_task task_id=70f70b61-4ca9-4760-90dc-19f2c3f669a4
+2025-10-09 17:40:49,089 | INFO | user_id=user1 action=submit_task task_id=70f70b61-4ca9-4760-90dc-19f2c3f669a4
+2025-10-09 17:43:15,232 | INFO | user_id=user1 action=claim_task task_id=3296f6ed-881f-40f0-b2ad-f9c149705d96
+2025-10-09 17:43:27,650 | INFO | user_id=user1 action=submit_task task_id=3296f6ed-881f-40f0-b2ad-f9c149705d96
+2025-10-10 09:01:55,612 | INFO | user_id=user1 action=claim_task task_id=2eae67bf-2688-46d9-9131-515fe63dc3a4
+2025-10-10 09:02:51,967 | INFO | user_id=user1 action=submit_task task_id=2eae67bf-2688-46d9-9131-515fe63dc3a4
+2025-10-10 09:07:34,214 | INFO | user_id=user1 action=claim_task task_id=40f7edf5-cf05-4b3a-8840-61b08882ca6c
+2025-10-10 09:07:46,869 | INFO | user_id=user1 action=submit_task task_id=40f7edf5-cf05-4b3a-8840-61b08882ca6c
+2025-10-10 09:10:29,302 | INFO | user_id=user6 action=review_task task_id=18dd2643-7259-4215-8f59-574c709f0dc3 result=approved
+2025-10-10 09:11:11,718 | INFO | user_id=user1 action=claim_task task_id=4ed39bcd-bed8-4db7-bf76-2258c69b4929
+2025-10-10 09:11:31,758 | INFO | user_id=user1 action=submit_task task_id=4ed39bcd-bed8-4db7-bf76-2258c69b4929
+2025-10-10 09:12:29,286 | INFO | user_id=user1 action=claim_task task_id=5109f891-0c83-4f87-81a1-3973bcfa9d4a
+2025-10-10 09:12:41,671 | INFO | user_id=user1 action=submit_task task_id=5109f891-0c83-4f87-81a1-3973bcfa9d4a
+2025-10-10 09:13:10,027 | INFO | user_id=user1 action=claim_task task_id=06752f5d-6d11-45a1-91e9-a0c81a3d2e5b
+2025-10-10 09:13:12,535 | INFO | user_id=user1 action=claim_task task_id=0c034a2c-18f7-417e-bffc-91da803474c7
+2025-10-10 09:13:21,278 | INFO | user_id=user1 action=submit_task task_id=0c034a2c-18f7-417e-bffc-91da803474c7
+2025-10-10 10:05:48,168 | INFO | user_id=user1 action=submit_task task_id=06752f5d-6d11-45a1-91e9-a0c81a3d2e5b
+2025-10-10 10:10:39,310 | INFO | user_id=user1 action=claim_task task_id=3197de9a-e5a6-4a5d-bee2-037e2eef74d1
+2025-10-10 10:11:01,534 | INFO | user_id=user1 action=submit_task task_id=3197de9a-e5a6-4a5d-bee2-037e2eef74d1
+2025-10-10 10:12:06,753 | INFO | user_id=user1 action=claim_task task_id=187505fa-49e5-4bcc-b6e5-6a7343a5b52c
+2025-10-10 10:12:20,539 | INFO | user_id=user1 action=submit_task task_id=187505fa-49e5-4bcc-b6e5-6a7343a5b52c
+2025-10-10 10:15:26,110 | INFO | user_id=user1 action=claim_task task_id=58c7c779-c5a0-4dfe-973b-48a83a0064ec
+2025-10-10 10:15:35,154 | INFO | user_id=user1 action=submit_task task_id=58c7c779-c5a0-4dfe-973b-48a83a0064ec
+2025-10-10 10:20:27,133 | INFO | user_id=user6 action=review_task task_id=d4b4b038-9bbb-4937-a2fb-31ebcf55e9ba result=rejected
+2025-10-10 10:20:34,773 | INFO | user_id=user6 action=review_task task_id=4f399004-28f0-4ccc-92c6-94de9f92df8b result=rejected
+2025-10-10 10:20:40,585 | INFO | user_id=user6 action=review_task task_id=187505fa-49e5-4bcc-b6e5-6a7343a5b52c result=rejected
+2025-10-10 10:21:15,122 | INFO | user_id=user1 action=submit_task task_id=4f399004-28f0-4ccc-92c6-94de9f92df8b
+2025-10-10 10:32:19,056 | INFO | user_id=user6 action=review_task task_id=04e2933d-acdd-4496-bf9b-a25d51a8132e result=approved
+2025-10-10 10:32:29,898 | INFO | user_id=user6 action=review_task task_id=70f70b61-4ca9-4760-90dc-19f2c3f669a4 result=approved
+2025-10-10 10:33:03,986 | INFO | user_id=user1 action=submit_task task_id=303e3b52-370c-4d52-87ec-1cf8633f8665
+2025-10-10 10:36:26,656 | INFO | user_id=user8 action=claim_task task_id=49066da6-57d9-4483-96df-6322a3825368
+2025-10-10 10:36:36,779 | INFO | user_id=user8 action=submit_task task_id=49066da6-57d9-4483-96df-6322a3825368
+2025-10-10 10:36:47,880 | INFO | user_id=user6 action=review_task task_id=49066da6-57d9-4483-96df-6322a3825368 result=approved
+2025-10-10 10:37:53,919 | INFO | user_id=user8 action=claim_task task_id=4a766e17-7bc6-4ce3-994d-6e1a90b4127e
+2025-10-10 10:38:21,571 | INFO | user_id=user8 action=submit_task task_id=4a766e17-7bc6-4ce3-994d-6e1a90b4127e
+2025-10-10 10:39:13,209 | INFO | user_id=user6 action=review_task task_id=4a766e17-7bc6-4ce3-994d-6e1a90b4127e result=approved
+2025-10-10 10:41:36,872 | INFO | user_id=user8 action=claim_task task_id=4d20dc4b-3f62-4c2f-99d6-7a9281669f15
+2025-10-10 10:41:39,406 | INFO | user_id=user8 action=claim_task task_id=4e7d4687-bf61-4579-b9a7-6a6c19243811
+2025-10-10 10:41:42,014 | INFO | user_id=user8 action=claim_task task_id=53a17e38-5888-4f3e-a8ab-cc2add73f137
+2025-10-10 10:42:22,600 | INFO | user_id=user8 action=submit_task task_id=4d20dc4b-3f62-4c2f-99d6-7a9281669f15
+2025-10-10 10:42:42,084 | INFO | user_id=user6 action=review_task task_id=4d20dc4b-3f62-4c2f-99d6-7a9281669f15 result=approved
+2025-10-10 10:42:55,205 | INFO | user_id=user8 action=submit_task task_id=4e7d4687-bf61-4579-b9a7-6a6c19243811
+2025-10-10 10:43:11,537 | INFO | user_id=user6 action=review_task task_id=4e7d4687-bf61-4579-b9a7-6a6c19243811 result=rejected
+2025-10-10 10:47:17,054 | INFO | user_id=user8 action=request_skip_task task_id=53a17e38-5888-4f3e-a8ab-cc2add73f137
+2025-10-10 10:47:39,691 | INFO | user_id=user6 action=review_skip_request task_id=53a17e38-5888-4f3e-a8ab-cc2add73f137 result=in_progress
+2025-10-10 10:48:16,994 | INFO | user_id=user8 action=request_skip_task task_id=53a17e38-5888-4f3e-a8ab-cc2add73f137
+2025-10-10 10:57:07,407 | INFO | user_id=user8 action=submit_task task_id=4e7d4687-bf61-4579-b9a7-6a6c19243811
+2025-10-10 10:57:21,526 | INFO | user_id=user6 action=review_task task_id=4e7d4687-bf61-4579-b9a7-6a6c19243811 result=approved
+2025-10-10 11:15:42,894 | INFO | user_id=user8 action=claim_task task_id=5743c3fb-5c58-4cac-b802-40709a1ec1db
+2025-10-10 11:15:48,983 | INFO | user_id=user8 action=submit_task task_id=5743c3fb-5c58-4cac-b802-40709a1ec1db
+2025-10-10 11:16:09,934 | INFO | user_id=user6 action=review_task task_id=5743c3fb-5c58-4cac-b802-40709a1ec1db result=rejected
+2025-10-10 11:32:09,017 | INFO | user_id=user6 action=review_skip_request task_id=53a17e38-5888-4f3e-a8ab-cc2add73f137 result=in_progress
+2025-10-10 11:32:19,588 | INFO | user_id=user8 action=submit_task task_id=5743c3fb-5c58-4cac-b802-40709a1ec1db
+2025-10-11 11:24:17,994 | INFO | user_id=user8 action=claim_task task_id=dd167844-9b7b-457a-8bb5-0c0c01b1bee3
+2025-10-11 11:24:43,585 | INFO | user_id=user8 action=submit_task task_id=dd167844-9b7b-457a-8bb5-0c0c01b1bee3
+2025-10-11 11:25:09,734 | INFO | user_id=user1 action=review_task task_id=dd167844-9b7b-457a-8bb5-0c0c01b1bee3 result=rejected
+2025-10-11 16:03:12,321 | INFO | user_id=user1 action=review_task task_id=5743c3fb-5c58-4cac-b802-40709a1ec1db result=approved
+2025-10-13 14:40:36,646 | INFO | user_id=user1 action=review_task task_id=53a17e38-5888-4f3e-a8ab-cc2add73f137 result=approved
+2025-10-13 16:31:46,504 | INFO | user_id=user8 action=claim_task task_id=b57b3bb2-881c-4431-ae43-5d8087191102
+2025-10-13 16:33:24,808 | INFO | user_id=user8 action=submit_task task_id=b57b3bb2-881c-4431-ae43-5d8087191102
+2025-10-13 16:33:51,825 | INFO | user_id=user1 action=review_task task_id=b57b3bb2-881c-4431-ae43-5d8087191102 result=approved
+2025-10-13 18:11:32,678 | INFO | user_id=user8 action=claim_task task_id=e097f39b-ec95-46cf-b2fc-c02cd5531d81
+2025-10-13 18:11:55,911 | INFO | user_id=user8 action=submit_task task_id=e097f39b-ec95-46cf-b2fc-c02cd5531d81
+2025-10-17 14:32:25,664 | INFO | user_id=user1 action=review_task task_id=40f7edf5-cf05-4b3a-8840-61b08882ca6c result=approved
+2025-10-17 14:32:27,825 | INFO | user_id=user1 action=review_task task_id=90a4d30e-4d50-4543-adee-9932bca548d6 result=approved
+2025-10-17 14:32:30,175 | INFO | user_id=user1 action=review_task task_id=74afdca6-5b80-401e-acd2-5716a21a6663 result=approved
+2025-10-17 14:32:31,911 | INFO | user_id=user1 action=review_task task_id=abee54a1-08c4-481f-b767-43843b323f7d result=approved
+2025-10-17 14:32:34,066 | INFO | user_id=user1 action=review_task task_id=d392e9d3-cc8c-4e26-bdc7-a8e1585e95b5 result=approved
+2025-10-17 14:32:36,213 | INFO | user_id=user1 action=review_task task_id=ca6fa579-ac81-4674-9ee7-06f5c0170368 result=approved
+2025-10-17 14:32:38,393 | INFO | user_id=user1 action=review_task task_id=7805b7a8-b11c-46aa-8459-1ceee93977cf result=approved
+2025-10-17 14:32:39,931 | INFO | user_id=user1 action=review_task task_id=3296f6ed-881f-40f0-b2ad-f9c149705d96 result=approved
+2025-10-17 14:32:41,573 | INFO | user_id=user1 action=review_task task_id=2eae67bf-2688-46d9-9131-515fe63dc3a4 result=approved
+2025-10-17 14:32:43,119 | INFO | user_id=user1 action=review_task task_id=4ed39bcd-bed8-4db7-bf76-2258c69b4929 result=approved
+2025-10-17 14:32:45,773 | INFO | user_id=user1 action=review_task task_id=5109f891-0c83-4f87-81a1-3973bcfa9d4a result=approved
+2025-10-17 14:32:47,693 | INFO | user_id=user1 action=review_task task_id=0c034a2c-18f7-417e-bffc-91da803474c7 result=approved
+2025-10-17 14:32:49,338 | INFO | user_id=user1 action=review_task task_id=06752f5d-6d11-45a1-91e9-a0c81a3d2e5b result=approved
+2025-10-17 14:32:50,893 | INFO | user_id=user1 action=review_task task_id=3197de9a-e5a6-4a5d-bee2-037e2eef74d1 result=approved
+2025-10-17 14:32:53,062 | INFO | user_id=user1 action=review_task task_id=58c7c779-c5a0-4dfe-973b-48a83a0064ec result=approved
+2025-10-17 14:32:55,816 | INFO | user_id=user1 action=review_task task_id=4f399004-28f0-4ccc-92c6-94de9f92df8b result=approved
+2025-10-17 14:32:58,217 | INFO | user_id=user1 action=review_task task_id=303e3b52-370c-4d52-87ec-1cf8633f8665 result=approved
+2025-10-17 14:33:00,230 | INFO | user_id=user1 action=review_task task_id=e097f39b-ec95-46cf-b2fc-c02cd5531d81 result=approved
+2025-10-17 16:12:40,295 | INFO | user_id=user1 action=submit_task task_id=d4b4b038-9bbb-4937-a2fb-31ebcf55e9ba
+2025-10-17 16:12:50,102 | INFO | user_id=user1 action=submit_task task_id=187505fa-49e5-4bcc-b6e5-6a7343a5b52c
+2025-10-17 16:12:59,602 | INFO | user_id=user1 action=review_task task_id=187505fa-49e5-4bcc-b6e5-6a7343a5b52c result=approved
+2025-10-17 16:13:02,133 | INFO | user_id=user1 action=review_task task_id=d4b4b038-9bbb-4937-a2fb-31ebcf55e9ba result=approved
+2025-10-22 11:23:23,483 | INFO | user_id=user8 action=claim_task task_id=8ba080ad-a81a-4a18-8858-1d75b9a0dc80
+2025-10-22 11:23:38,651 | INFO | user_id=user8 action=request_skip_task task_id=8ba080ad-a81a-4a18-8858-1d75b9a0dc80
+2025-10-22 11:24:28,368 | INFO | user_id=user1 action=review_skip_request task_id=8ba080ad-a81a-4a18-8858-1d75b9a0dc80 result=skipped
+2025-10-22 11:24:37,373 | INFO | user_id=user8 action=claim_task task_id=95d4caea-6e6b-43ab-b53d-af05e0f194ca
+2025-10-22 11:25:09,254 | INFO | user_id=user8 action=request_skip_task task_id=95d4caea-6e6b-43ab-b53d-af05e0f194ca
+2025-10-22 11:25:17,697 | INFO | user_id=user1 action=review_skip_request task_id=95d4caea-6e6b-43ab-b53d-af05e0f194ca result=in_progress
+2025-10-22 11:27:26,227 | INFO | user_id=user8 action=request_skip_task task_id=95d4caea-6e6b-43ab-b53d-af05e0f194ca
+2025-10-22 11:28:14,526 | INFO | user_id=user1 action=review_skip_request task_id=95d4caea-6e6b-43ab-b53d-af05e0f194ca result=in_progress
+2025-10-22 11:28:22,896 | INFO | user_id=user8 action=request_skip_task task_id=95d4caea-6e6b-43ab-b53d-af05e0f194ca
+2025-10-22 17:33:54,911 | INFO | user_id=user8 action=claim_task task_id=9ae02d64-327d-46bc-b9c0-7918f91c9561
+2025-10-22 17:34:03,699 | INFO | user_id=user8 action=submit_task task_id=9ae02d64-327d-46bc-b9c0-7918f91c9561
+2025-10-22 17:38:30,070 | INFO | user_id=user8 action=claim_task task_id=ba01586c-49ff-41f2-b841-2689f882db58
+2025-10-31 11:06:42,110 | INFO | user_id=user8 action=claim_task task_id=9e1f1616-f5ad-4433-9a46-8d3c8155cb56
+2025-10-31 11:06:47,795 | INFO | user_id=user8 action=submit_task task_id=9e1f1616-f5ad-4433-9a46-8d3c8155cb56
+2025-10-31 11:07:10,072 | INFO | user_id=user1 action=review_task task_id=9e1f1616-f5ad-4433-9a46-8d3c8155cb56 result=approved
+2025-10-31 11:12:30,539 | INFO | user_id=user8 action=claim_task task_id=afd6e664-cb20-4d59-8c01-fada8a1f42f3
+2025-10-31 11:12:36,113 | INFO | user_id=user8 action=submit_task task_id=afd6e664-cb20-4d59-8c01-fada8a1f42f3
+2025-10-31 11:12:47,411 | INFO | user_id=user1 action=review_task task_id=afd6e664-cb20-4d59-8c01-fada8a1f42f3 result=approved
+2025-10-31 11:19:38,975 | INFO | user_id=user8 action=claim_task task_id=b30784ef-27d9-4a4e-8534-096fa35d4b0c
+2025-10-31 11:20:29,193 | INFO | user_id=user8 action=claim_task task_id=c6953480-6de8-4e13-ac4f-ccd472522560
+2025-10-31 11:20:39,763 | INFO | user_id=user8 action=submit_task task_id=b30784ef-27d9-4a4e-8534-096fa35d4b0c
+2025-10-31 11:20:42,807 | INFO | user_id=user8 action=submit_task task_id=c6953480-6de8-4e13-ac4f-ccd472522560
+2025-10-31 11:21:49,790 | INFO | user_id=user1 action=review_task task_id=c6953480-6de8-4e13-ac4f-ccd472522560 result=approved
+2025-10-31 11:26:42,591 | INFO | user_id=user1 action=review_task task_id=b30784ef-27d9-4a4e-8534-096fa35d4b0c result=approved
+2025-10-31 11:28:43,603 | INFO | user_id=user8 action=claim_task task_id=19700c12-e320-48de-a4c4-4dbf04f35412
+2025-10-31 11:28:50,440 | INFO | user_id=user8 action=submit_task task_id=19700c12-e320-48de-a4c4-4dbf04f35412
+2025-10-31 11:28:57,160 | INFO | user_id=user1 action=review_task task_id=19700c12-e320-48de-a4c4-4dbf04f35412 result=rejected
+2025-10-31 11:29:06,836 | INFO | user_id=user8 action=claim_task task_id=c97c3b8c-3f3f-44d5-96d7-f0cf4262dc2c
+2025-10-31 11:29:21,982 | INFO | user_id=user8 action=request_skip_task task_id=c97c3b8c-3f3f-44d5-96d7-f0cf4262dc2c
+2025-10-31 11:29:26,757 | INFO | user_id=user1 action=review_skip_request task_id=c97c3b8c-3f3f-44d5-96d7-f0cf4262dc2c result=skipped
+2025-10-31 11:29:40,813 | INFO | user_id=user8 action=submit_task task_id=19700c12-e320-48de-a4c4-4dbf04f35412
+2025-10-31 11:29:46,907 | INFO | user_id=user1 action=review_task task_id=19700c12-e320-48de-a4c4-4dbf04f35412 result=approved
+2025-10-31 11:38:12,073 | INFO | user_id=user8 action=claim_task task_id=a6a03ab2-7ea3-4fa7-aa3c-8a6e66d551c2
+2025-10-31 11:38:20,680 | INFO | user_id=user8 action=submit_task task_id=a6a03ab2-7ea3-4fa7-aa3c-8a6e66d551c2
+2025-10-31 11:38:33,403 | INFO | user_id=user1 action=review_task task_id=a6a03ab2-7ea3-4fa7-aa3c-8a6e66d551c2 result=approved
+2025-10-31 13:31:24,904 | INFO | user_id=user8 action=claim_task task_id=cc0bccda-cb5a-4513-b00a-2352fd47bb47
+2025-10-31 13:31:37,974 | INFO | user_id=user8 action=submit_task task_id=cc0bccda-cb5a-4513-b00a-2352fd47bb47
+2025-10-31 13:32:12,568 | INFO | user_id=user1 action=review_task task_id=cc0bccda-cb5a-4513-b00a-2352fd47bb47 result=rejected
+2025-10-31 13:51:58,989 | INFO | user_id=user8 action=submit_task task_id=cc0bccda-cb5a-4513-b00a-2352fd47bb47
+2025-10-31 13:52:25,252 | INFO | user_id=user1 action=review_task task_id=cc0bccda-cb5a-4513-b00a-2352fd47bb47 result=rejected
+2025-10-31 13:55:17,292 | INFO | user_id=user8 action=submit_task task_id=cc0bccda-cb5a-4513-b00a-2352fd47bb47
+2025-10-31 13:55:50,568 | INFO | user_id=user1 action=review_task task_id=cc0bccda-cb5a-4513-b00a-2352fd47bb47 result=approved
+2025-10-31 14:01:44,646 | INFO | user_id=user8 action=claim_task task_id=ccc6a973-d7a9-412a-afe5-537251c7976d
+2025-10-31 14:02:04,021 | INFO | user_id=user8 action=submit_task task_id=ccc6a973-d7a9-412a-afe5-537251c7976d
+2025-10-31 14:07:52,956 | INFO | user_id=user1 action=review_task task_id=ccc6a973-d7a9-412a-afe5-537251c7976d result=rejected
+2025-10-31 14:08:25,920 | INFO | user_id=user8 action=submit_task task_id=ccc6a973-d7a9-412a-afe5-537251c7976d
+2025-10-31 14:08:59,746 | INFO | user_id=user1 action=review_task task_id=ccc6a973-d7a9-412a-afe5-537251c7976d result=rejected
+2025-10-31 14:09:29,916 | INFO | user_id=user8 action=submit_task task_id=ccc6a973-d7a9-412a-afe5-537251c7976d
+2025-10-31 14:10:11,849 | INFO | user_id=user1 action=review_task task_id=ccc6a973-d7a9-412a-afe5-537251c7976d result=rejected
+2025-10-31 14:14:54,428 | INFO | user_id=user8 action=claim_task task_id=d71bed96-a9e6-4e6d-946b-88284a145203
+2025-10-31 14:15:12,133 | INFO | user_id=user8 action=submit_task task_id=d71bed96-a9e6-4e6d-946b-88284a145203
+2025-10-31 14:15:41,409 | INFO | user_id=user1 action=review_task task_id=d71bed96-a9e6-4e6d-946b-88284a145203 result=rejected
+2025-10-31 14:16:10,111 | INFO | user_id=user8 action=submit_task task_id=d71bed96-a9e6-4e6d-946b-88284a145203
+2025-10-31 14:16:46,923 | INFO | user_id=user1 action=review_task task_id=d71bed96-a9e6-4e6d-946b-88284a145203 result=rejected
+2025-10-31 14:17:51,796 | INFO | user_id=user8 action=submit_task task_id=d71bed96-a9e6-4e6d-946b-88284a145203
+2025-10-31 14:34:23,109 | INFO | user_id=user1 action=review_task task_id=d71bed96-a9e6-4e6d-946b-88284a145203 result=rejected
+2025-10-31 14:37:10,694 | INFO | user_id=user8 action=submit_task task_id=d71bed96-a9e6-4e6d-946b-88284a145203
+2025-10-31 14:48:45,768 | INFO | user_id=user1 action=review_task task_id=d71bed96-a9e6-4e6d-946b-88284a145203 result=approved
+2025-10-31 16:36:13,530 | INFO | user_id=user8 action=submit_task task_id=ccc6a973-d7a9-412a-afe5-537251c7976d
+2025-10-31 16:37:58,884 | INFO | user_id=user1 action=review_task task_id=ccc6a973-d7a9-412a-afe5-537251c7976d result=rejected
+2025-10-31 16:38:13,262 | INFO | user_id=user8 action=submit_task task_id=ccc6a973-d7a9-412a-afe5-537251c7976d
+2025-10-31 16:38:19,402 | INFO | user_id=user1 action=review_task task_id=ccc6a973-d7a9-412a-afe5-537251c7976d result=approved
+2025-10-31 16:40:30,967 | INFO | user_id=user8 action=claim_task task_id=dcdd5696-b518-4ee1-a7e3-2fe1ac45b4ac
+2025-10-31 16:40:47,939 | INFO | user_id=user8 action=request_skip_task task_id=dcdd5696-b518-4ee1-a7e3-2fe1ac45b4ac
+2025-10-31 16:43:07,862 | INFO | user_id=user1 action=review_skip_request task_id=dcdd5696-b518-4ee1-a7e3-2fe1ac45b4ac result=in_progress
+2025-11-03 10:10:54,971 | INFO | user_id=user8 action=submit_task task_id=ef6bed93-fbc4-4d98-a140-c730f954ed49
+2025-11-03 10:11:16,654 | INFO | user_id=user1 action=claim_task task_id=f1aee405-a69d-4f8b-9cf9-a48b0056811e
+2025-11-03 10:11:33,964 | INFO | user_id=user1 action=review_task task_id=ef6bed93-fbc4-4d98-a140-c730f954ed49 result=rejected
+2025-11-03 10:11:43,867 | INFO | user_id=user8 action=submit_task task_id=ef6bed93-fbc4-4d98-a140-c730f954ed49
+2025-11-03 10:11:53,295 | INFO | user_id=user1 action=review_task task_id=ef6bed93-fbc4-4d98-a140-c730f954ed49 result=approved
+2025-11-03 10:12:17,491 | INFO | user_id=user8 action=claim_task task_id=f327c3d2-b637-4f56-867e-402197ced2ab
+2025-11-03 10:12:36,370 | INFO | user_id=user8 action=request_skip_task task_id=f327c3d2-b637-4f56-867e-402197ced2ab
+2025-11-03 10:12:43,878 | INFO | user_id=user1 action=review_skip_request task_id=f327c3d2-b637-4f56-867e-402197ced2ab result=in_progress
+2025-11-03 10:12:57,077 | INFO | user_id=user8 action=submit_task task_id=f327c3d2-b637-4f56-867e-402197ced2ab
+2025-11-03 10:13:15,767 | INFO | user_id=user1 action=review_task task_id=f327c3d2-b637-4f56-867e-402197ced2ab result=rejected
+2025-11-03 10:13:37,067 | INFO | user_id=user8 action=submit_task task_id=f327c3d2-b637-4f56-867e-402197ced2ab
+2025-11-03 10:20:43,723 | INFO | user_id=user1 action=review_task task_id=f327c3d2-b637-4f56-867e-402197ced2ab result=rejected
+2025-11-03 10:20:59,412 | INFO | user_id=user8 action=submit_task task_id=f327c3d2-b637-4f56-867e-402197ced2ab
+2025-11-03 10:21:13,885 | INFO | user_id=user1 action=review_task task_id=f327c3d2-b637-4f56-867e-402197ced2ab result=rejected
+2025-11-03 10:21:18,590 | INFO | user_id=user8 action=submit_task task_id=f327c3d2-b637-4f56-867e-402197ced2ab
+2025-11-03 10:21:31,870 | INFO | user_id=user1 action=review_task task_id=f327c3d2-b637-4f56-867e-402197ced2ab result=approved
+2025-11-03 10:22:00,917 | INFO | user_id=user8 action=claim_task task_id=f5b60537-c04f-420e-8731-59745e401997
+2025-11-03 10:22:13,650 | INFO | user_id=user8 action=submit_task task_id=f5b60537-c04f-420e-8731-59745e401997
+2025-11-03 10:23:28,882 | INFO | user_id=user1 action=review_task task_id=f5b60537-c04f-420e-8731-59745e401997 result=approved
+2025-11-03 10:36:34,506 | INFO | user_id=user1 action=submit_task task_id=f1aee405-a69d-4f8b-9cf9-a48b0056811e
+2025-11-03 10:41:38,420 | INFO | user_id=user8 action=claim_task task_id=19f54030-101a-42ad-98b3-1ab4c80e8712
+2025-11-03 10:41:42,735 | INFO | user_id=user8 action=submit_task task_id=19f54030-101a-42ad-98b3-1ab4c80e8712
+2025-11-03 10:42:15,860 | INFO | user_id=user1 action=review_task task_id=19f54030-101a-42ad-98b3-1ab4c80e8712 result=approved
+2025-11-03 10:42:56,986 | INFO | user_id=user8 action=claim_task task_id=2bfbfb55-bc22-4c57-835a-9466becbdc21
+2025-11-03 10:43:07,863 | INFO | user_id=user8 action=submit_task task_id=2bfbfb55-bc22-4c57-835a-9466becbdc21
+2025-11-03 10:47:02,120 | INFO | user_id=user1 action=review_task task_id=2bfbfb55-bc22-4c57-835a-9466becbdc21 result=approved
+2025-11-03 10:47:15,375 | INFO | user_id=user8 action=claim_task task_id=6fe221b2-312f-42dc-8985-85e42865f8a1
+2025-11-03 10:47:24,941 | INFO | user_id=user8 action=submit_task task_id=6fe221b2-312f-42dc-8985-85e42865f8a1
+2025-11-03 10:48:54,336 | INFO | user_id=user1 action=review_task task_id=6fe221b2-312f-42dc-8985-85e42865f8a1 result=rejected
+2025-11-03 10:49:58,636 | INFO | user_id=user8 action=submit_task task_id=6fe221b2-312f-42dc-8985-85e42865f8a1
+2025-11-03 10:50:51,939 | INFO | user_id=user1 action=review_task task_id=6fe221b2-312f-42dc-8985-85e42865f8a1 result=rejected
+2025-11-03 10:51:09,769 | INFO | user_id=user8 action=submit_task task_id=6fe221b2-312f-42dc-8985-85e42865f8a1
+2025-11-03 10:58:05,698 | INFO | user_id=user1 action=review_task task_id=6fe221b2-312f-42dc-8985-85e42865f8a1 result=approved
+2025-11-03 10:58:23,653 | INFO | user_id=user1 action=review_task task_id=f1aee405-a69d-4f8b-9cf9-a48b0056811e result=approved
+2025-11-03 11:00:42,005 | INFO | user_id=user8 action=claim_task task_id=4a1ee3b6-14c6-4405-8814-3d0bfdb6abd2
+2025-11-03 11:00:48,887 | INFO | user_id=user8 action=submit_task task_id=4a1ee3b6-14c6-4405-8814-3d0bfdb6abd2
+2025-11-03 11:01:06,693 | INFO | user_id=user1 action=review_task task_id=4a1ee3b6-14c6-4405-8814-3d0bfdb6abd2 result=rejected
+2025-11-03 11:01:24,992 | INFO | user_id=user8 action=submit_task task_id=4a1ee3b6-14c6-4405-8814-3d0bfdb6abd2
+2025-11-14 10:58:45,551 | INFO | user_id=user8 action=claim_task task_id=f9f56444-b179-42f1-bc6d-7ea13f510039
+2025-11-14 10:58:53,419 | INFO | user_id=user8 action=submit_task task_id=463be5d3-b139-4c07-9500-9ef5b4f77bbf
+2025-11-14 10:59:18,341 | INFO | user_id=user1 action=review_task task_id=463be5d3-b139-4c07-9500-9ef5b4f77bbf result=approved
+2025-11-14 10:59:34,299 | INFO | user_id=user8 action=submit_task task_id=f9f56444-b179-42f1-bc6d-7ea13f510039
+2025-11-14 10:59:45,345 | INFO | user_id=user1 action=review_task task_id=f9f56444-b179-42f1-bc6d-7ea13f510039 result=rejected
+2025-11-14 10:59:55,543 | INFO | user_id=user8 action=submit_task task_id=f9f56444-b179-42f1-bc6d-7ea13f510039
+2025-11-14 11:00:04,711 | INFO | user_id=user1 action=review_task task_id=f9f56444-b179-42f1-bc6d-7ea13f510039 result=approved
+2025-11-14 11:01:08,980 | INFO | user_id=user8 action=claim_task task_id=fa92c509-a9c9-4019-a870-451bd6d691a9
+2025-11-14 11:01:12,573 | INFO | user_id=user8 action=claim_task task_id=1f5d0a0d-19dc-4416-acbb-63d5532b475f
+2025-11-14 11:01:20,168 | INFO | user_id=user8 action=submit_task task_id=fa92c509-a9c9-4019-a870-451bd6d691a9
+2025-11-14 11:01:32,936 | INFO | user_id=user1 action=review_task task_id=fa92c509-a9c9-4019-a870-451bd6d691a9 result=approved
